@@ -1,0 +1,16 @@
+All the PHP, prefs.css, and strapping.js are originally derived from
+MediaWiki's vector theme, which is GPLv2:
+http://gnu.org/licenses/gpl-2.0
+
+Bootstrap is licensed under Apache License v2.0:
+http://apache.org/licenses/LICENSE-2.0
+
+Bootstrap icons are licensed under the CC BY 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+csshover.htc, the hover fixer for IE, is licensed under the LGPL v2.1:
+http://gnu.org/licenses/lgpl-2.1
+
+All CSS, with the exception of Bootstrap and prefs.css, is CC0:
+http://creativecommons.org/publicdomain/zero/1.0/
+(Bootstrap is Apache, prefs.css is based on MW and is GPLv2+)
