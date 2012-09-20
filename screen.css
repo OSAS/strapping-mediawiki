@@ -1,7 +1,14 @@
 @import url(bootstrap/css/bootstrap.css);
 @import url(bootstrap/css/bootstrap-responsive.css);
 @import url(prefs.css);
+
+/** 
+ * Add a theme.css with your custom overrides (fonts, colors, etc)
+ * and uncomment the following import
+ */
+/*
 @import url(theme.css);
+*/
 
 html {
   /* Always show a scrollbar, to prevent jumping content */
