@@ -9,7 +9,7 @@
  */
 
 if( !defined( 'MEDIAWIKI' ) ) {
-	die( -1 );
+  die( -1 );
 }
 
 /**
@@ -18,8 +18,8 @@ if( !defined( 'MEDIAWIKI' ) ) {
  */
 class SkinStrapping extends SkinTemplate {
 
-	var $skinname = 'strapping', $stylename = 'strapping',
-		$template = 'StrappingTemplate', $useHeadElement = true;
+  var $skinname = 'strapping', $stylename = 'strapping',
+    $template = 'StrappingTemplate', $useHeadElement = true;
 
   function tocList($toc) {
     $this->savedToc = parent::tocList($toc);
@@ -28,43 +28,43 @@ class SkinStrapping extends SkinTemplate {
     return "";
   }
 
-	/**
-	 * Initializes output page and sets up skin-specific parameters
-	 * @param $out OutputPage object to initialize
-	 */
-	public function initPage( OutputPage $out ) {
+  /**
+   * Initializes output page and sets up skin-specific parameters
+   * @param $out OutputPage object to initialize
+   */
+  public function initPage( OutputPage $out ) {
     global $wgLocalStylePath;
 
-		parent::initPage( $out );
+    parent::initPage( $out );
 
-		// Append CSS which includes IE only behavior fixes for hover support -
-		// this is better than including this in a CSS fille since it doesn't
-		// wait for the CSS file to load before fetching the HTC file.
-		$min = $this->getRequest()->getFuzzyBool( 'debug' ) ? '' : '.min';
-		$out->addHeadItem( 'csshover',
-			'<!--[if lt IE 7]><style type="text/css">body{behavior:url("' .
-				htmlspecialchars( $wgLocalStylePath ) .
-				"/{$this->stylename}/csshover{$min}.htc\")}</style><![endif]-->"
-		);
+    // Append CSS which includes IE only behavior fixes for hover support -
+    // this is better than including this in a CSS fille since it doesn't
+    // wait for the CSS file to load before fetching the HTC file.
+    $min = $this->getRequest()->getFuzzyBool( 'debug' ) ? '' : '.min';
+    $out->addHeadItem( 'csshover',
+      '<!--[if lt IE 7]><style type="text/css">body{behavior:url("' .
+        htmlspecialchars( $wgLocalStylePath ) .
+        "/{$this->stylename}/csshover{$min}.htc\")}</style><![endif]-->"
+    );
 
     $out->addHeadItem('responsive', '<meta name="viewport" content="width=device-width, initial-scale=1.0">');
-		$out->addModuleScripts( 'skins.strapping' );
+    $out->addModuleScripts( 'skins.strapping' );
     $out->addScript('<script type="text/javascript" src="/skins/strapping/bootstrap/js/bootstrap.js"></script>');
     $out->addScript('<script type="text/javascript" src="/skins/strapping/strapping.js"></script>');
-	}
+  }
 
-	/**
-	 * Load skin and user CSS files in the correct order
-	 * fixes bug 22916
-	 * @param $out OutputPage object
-	 */
-	function setupSkinUserCss( OutputPage $out ){
+  /**
+   * Load skin and user CSS files in the correct order
+   * fixes bug 22916
+   * @param $out OutputPage object
+   */
+  function setupSkinUserCss( OutputPage $out ){
     parent::setupSkinUserCss( $out );
     /*
       $out->addModuleStyles( 'skins.strapping' );
      */
     $out->addStyle( 'strapping/screen.css', 'screen' );
-	}
+  }
 }
 
 /**
@@ -73,13 +73,13 @@ class SkinStrapping extends SkinTemplate {
  */
 class StrappingTemplate extends BaseTemplate {
 
-	/* Functions */
+  /* Functions */
 
-	/**
-	 * Outputs the entire contents of the (X)HTML page
-	 */
-	public function execute() {
-		global $wgVectorUseIconWatch;
+  /**
+   * Outputs the entire contents of the (X)HTML page
+   */
+  public function execute() {
+    global $wgVectorUseIconWatch;
     global $wgSearchPlacement;
 
     if (!$wgSearchPlacement) {
@@ -88,61 +88,61 @@ class StrappingTemplate extends BaseTemplate {
       $wgSearchPlacement['footer'] = false;
     }
 
-		// Build additional attributes for navigation urls
-		$nav = $this->data['content_navigation'];
+    // Build additional attributes for navigation urls
+    $nav = $this->data['content_navigation'];
 
-		if ( $wgVectorUseIconWatch ) {
-			$mode = $this->getSkin()->getTitle()->userIsWatching() ? 'unwatch' : 'watch';
-			if ( isset( $nav['actions'][$mode] ) ) {
-				$nav['views'][$mode] = $nav['actions'][$mode];
-				$nav['views'][$mode]['class'] = rtrim( 'icon ' . $nav['views'][$mode]['class'], ' ' );
-				$nav['views'][$mode]['primary'] = true;
-				unset( $nav['actions'][$mode] );
-			}
-		}
+    if ( $wgVectorUseIconWatch ) {
+      $mode = $this->getSkin()->getTitle()->userIsWatching() ? 'unwatch' : 'watch';
+      if ( isset( $nav['actions'][$mode] ) ) {
+        $nav['views'][$mode] = $nav['actions'][$mode];
+        $nav['views'][$mode]['class'] = rtrim( 'icon ' . $nav['views'][$mode]['class'], ' ' );
+        $nav['views'][$mode]['primary'] = true;
+        unset( $nav['actions'][$mode] );
+      }
+    }
 
-		$xmlID = '';
-		foreach ( $nav as $section => $links ) {
-			foreach ( $links as $key => $link ) {
-				if ( $section == 'views' && !( isset( $link['primary'] ) && $link['primary'] ) ) {
-					$link['class'] = rtrim( 'collapsible ' . $link['class'], ' ' );
-				}
+    $xmlID = '';
+    foreach ( $nav as $section => $links ) {
+      foreach ( $links as $key => $link ) {
+        if ( $section == 'views' && !( isset( $link['primary'] ) && $link['primary'] ) ) {
+          $link['class'] = rtrim( 'collapsible ' . $link['class'], ' ' );
+        }
 
-				$xmlID = isset( $link['id'] ) ? $link['id'] : 'ca-' . $xmlID;
-				$nav[$section][$key]['attributes'] =
-					' id="' . Sanitizer::escapeId( $xmlID ) . '"';
-				if ( $link['class'] ) {
-					$nav[$section][$key]['attributes'] .=
-						' class="' . htmlspecialchars( $link['class'] ) . '"';
-					unset( $nav[$section][$key]['class'] );
-				}
-				if ( isset( $link['tooltiponly'] ) && $link['tooltiponly'] ) {
-					$nav[$section][$key]['key'] =
-						Linker::tooltip( $xmlID );
-				} else {
-					$nav[$section][$key]['key'] =
-						Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( $xmlID ) );
-				}
-			}
-		}
-		$this->data['namespace_urls'] = $nav['namespaces'];
-		$this->data['view_urls'] = $nav['views'];
-		$this->data['action_urls'] = $nav['actions'];
-		$this->data['variant_urls'] = $nav['variants'];
+        $xmlID = isset( $link['id'] ) ? $link['id'] : 'ca-' . $xmlID;
+        $nav[$section][$key]['attributes'] =
+          ' id="' . Sanitizer::escapeId( $xmlID ) . '"';
+        if ( $link['class'] ) {
+          $nav[$section][$key]['attributes'] .=
+            ' class="' . htmlspecialchars( $link['class'] ) . '"';
+          unset( $nav[$section][$key]['class'] );
+        }
+        if ( isset( $link['tooltiponly'] ) && $link['tooltiponly'] ) {
+          $nav[$section][$key]['key'] =
+            Linker::tooltip( $xmlID );
+        } else {
+          $nav[$section][$key]['key'] =
+            Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( $xmlID ) );
+        }
+      }
+    }
+    $this->data['namespace_urls'] = $nav['namespaces'];
+    $this->data['view_urls'] = $nav['views'];
+    $this->data['action_urls'] = $nav['actions'];
+    $this->data['variant_urls'] = $nav['variants'];
 
-		// Reverse horizontally rendered navigation elements
+    // Reverse horizontally rendered navigation elements
     # We're changing theese vertically, 
     # so flipping them shouldn't be necessary
-		if ( $this->data['rtl'] ) {
-			#$this->data['view_urls'] =
-				#array_reverse( $this->data['view_urls'] );
-			#$this->data['namespace_urls'] =
-				#array_reverse( $this->data['namespace_urls'] );
-			#$this->data['personal_urls'] =
-				#array_reverse( $this->data['personal_urls'] );
-		}
-		// Output HTML Page
-		$this->html( 'headelement' );
+    if ( $this->data['rtl'] ) {
+      #$this->data['view_urls'] =
+        #array_reverse( $this->data['view_urls'] );
+      #$this->data['namespace_urls'] =
+        #array_reverse( $this->data['namespace_urls'] );
+      #$this->data['personal_urls'] =
+        #array_reverse( $this->data['personal_urls'] );
+    }
+    // Output HTML Page
+    $this->html( 'headelement' );
 ?>
 
 <?php if ($this->data['loggedin']) { ?>
@@ -193,7 +193,7 @@ class StrappingTemplate extends BaseTemplate {
 <!--<pre><?php print_r($this->getPersonalTools()); ?></pre>-->
 
 
-		<div id="mw-page-base" class="noprint"></div>
+    <div id="mw-page-base" class="noprint"></div>
     <div id="mw-head-base" class="noprint"></div>
 
     <!-- Header -->
@@ -239,49 +239,49 @@ class StrappingTemplate extends BaseTemplate {
       $userStateClass = "user-loggedout";
     } ?>
 
-		<!-- content -->
+    <!-- content -->
     <section id="content" class="mw-body container <?php echo $userStateClass; ?>">
-			<div id="top"></div>
-			<div id="mw-js-message" style="display:none;"<?php $this->html( 'userlangattributes' ) ?>></div>
-			<?php if ( $this->data['sitenotice'] ): ?>
-			<!-- sitenotice -->
-			<div id="siteNotice"><?php $this->html( 'sitenotice' ) ?></div>
-			<!-- /sitenotice -->
-			<?php endif; ?>
+      <div id="top"></div>
+      <div id="mw-js-message" style="display:none;"<?php $this->html( 'userlangattributes' ) ?>></div>
+      <?php if ( $this->data['sitenotice'] ): ?>
+      <!-- sitenotice -->
+      <div id="siteNotice"><?php $this->html( 'sitenotice' ) ?></div>
+      <!-- /sitenotice -->
+      <?php endif; ?>
       <!-- firstHeading -->
       <!--
-			<h1 id="firstHeading" class="firstHeading page-header">
-				<span dir="auto"><?php $this->html( 'title' ) ?></span>
+      <h1 id="firstHeading" class="firstHeading page-header">
+        <span dir="auto"><?php $this->html( 'title' ) ?></span>
       </h1>
       -->
-			<!-- /firstHeading -->
-			<!-- bodyContent -->
+      <!-- /firstHeading -->
+      <!-- bodyContent -->
       <div id="bodyContent">
-				<?php if ( $this->data['isarticle'] ): ?>
-				<!-- tagline -->
-				<!--<div id="siteSub"><?php $this->msg( 'tagline' ) ?></div>-->
-				<!-- /tagline -->
-				<?php endif; ?>
-				<!-- subtitle -->
-				<div id="contentSub"<?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
-				<!-- /subtitle -->
-				<?php if ( $this->data['undelete'] ): ?>
-				<!-- undelete -->
-				<div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
-				<!-- /undelete -->
-				<?php endif; ?>
-				<?php if( $this->data['newtalk'] ): ?>
-				<!-- newtalk -->
-				<div class="usermessage"><?php $this->html( 'newtalk' )  ?></div>
-				<!-- /newtalk -->
-				<?php endif; ?>
-				<?php if ( $this->data['showjumplinks'] ): ?>
-				<!-- jumpto -->
-				<div id="jump-to-nav" class="mw-jump">
-					<?php $this->msg( 'jumpto' ) ?> <a href="#mw-head"><?php $this->msg( 'jumptonavigation' ) ?></a>,
-					<a href="#p-search"><?php $this->msg( 'jumptosearch' ) ?></a>
-				</div>
-				<!-- /jumpto -->
+        <?php if ( $this->data['isarticle'] ): ?>
+        <!-- tagline -->
+        <!--<div id="siteSub"><?php $this->msg( 'tagline' ) ?></div>-->
+        <!-- /tagline -->
+        <?php endif; ?>
+        <!-- subtitle -->
+        <div id="contentSub"<?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
+        <!-- /subtitle -->
+        <?php if ( $this->data['undelete'] ): ?>
+        <!-- undelete -->
+        <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
+        <!-- /undelete -->
+        <?php endif; ?>
+        <?php if( $this->data['newtalk'] ): ?>
+        <!-- newtalk -->
+        <div class="usermessage"><?php $this->html( 'newtalk' )  ?></div>
+        <!-- /newtalk -->
+        <?php endif; ?>
+        <?php if ( $this->data['showjumplinks'] ): ?>
+        <!-- jumpto -->
+        <div id="jump-to-nav" class="mw-jump">
+          <?php $this->msg( 'jumpto' ) ?> <a href="#mw-head"><?php $this->msg( 'jumptonavigation' ) ?></a>,
+          <a href="#p-search"><?php $this->msg( 'jumptosearch' ) ?></a>
+        </div>
+        <!-- /jumpto -->
         <?php endif; ?>
 
         <!-- bodycontent -->
@@ -302,38 +302,38 @@ class StrappingTemplate extends BaseTemplate {
         <?php } ?>
         <!-- /bodycontent -->
 
-				<?php if ( $this->data['printfooter'] ): ?>
-				<!-- printfooter -->
-				<div class="printfooter">
-				<?php $this->html( 'printfooter' ); ?>
-				</div>
-				<!-- /printfooter -->
-				<?php endif; ?>
-				<?php if ( $this->data['catlinks'] ): ?>
-				<!-- catlinks -->
-				<?php $this->html( 'catlinks' ); ?>
-				<!-- /catlinks -->
-				<?php endif; ?>
-				<?php if ( $this->data['dataAfterContent'] ): ?>
-				<!-- dataAfterContent -->
-				<?php $this->html( 'dataAfterContent' ); ?>
-				<!-- /dataAfterContent -->
-				<?php endif; ?>
-				<div class="visualClear"></div>
-				<!-- debughtml -->
-				<?php $this->html( 'debughtml' ); ?>
-				<!-- /debughtml -->
-			</div>
-			<!-- /bodyContent -->
-		</section>
+        <?php if ( $this->data['printfooter'] ): ?>
+        <!-- printfooter -->
+        <div class="printfooter">
+        <?php $this->html( 'printfooter' ); ?>
+        </div>
+        <!-- /printfooter -->
+        <?php endif; ?>
+        <?php if ( $this->data['catlinks'] ): ?>
+        <!-- catlinks -->
+        <?php $this->html( 'catlinks' ); ?>
+        <!-- /catlinks -->
+        <?php endif; ?>
+        <?php if ( $this->data['dataAfterContent'] ): ?>
+        <!-- dataAfterContent -->
+        <?php $this->html( 'dataAfterContent' ); ?>
+        <!-- /dataAfterContent -->
+        <?php endif; ?>
+        <div class="visualClear"></div>
+        <!-- debughtml -->
+        <?php $this->html( 'debughtml' ); ?>
+        <!-- /debughtml -->
+      </div>
+      <!-- /bodyContent -->
+    </section>
     <!-- /content -->
 
     <?php if ($this->data['loggedin']) { ?>
 
       <!-- panel -->
-			<div id="mw-panel" class="noprint">
-				<?php $this->renderPortals(); ?>
-			</div>
+      <div id="mw-panel" class="noprint">
+        <?php $this->renderPortals(); ?>
+      </div>
       <!-- /panel -->
 
     <?php } ?>
@@ -377,14 +377,14 @@ class StrappingTemplate extends BaseTemplate {
           <?php $footericons = $this->getFooterIcons("icononly");
           if ( count( $footericons ) > 0 ): ?>
             <ul id="footer-icons" class="noprint">
-    <?php			foreach ( $footericons as $blockName => $footerIcons ): ?>
+    <?php      foreach ( $footericons as $blockName => $footerIcons ): ?>
               <li id="footer-<?php echo htmlspecialchars( $blockName ); ?>ico">
-    <?php				foreach ( $footerIcons as $icon ): ?>
+    <?php        foreach ( $footerIcons as $icon ): ?>
                 <?php echo $this->getSkin()->makeFooterIcon( $icon ); ?>
 
-    <?php				endforeach; ?>
+    <?php        endforeach; ?>
               </li>
-    <?php			endforeach; ?>
+    <?php      endforeach; ?>
             </ul>
           <?php endif; ?>
         </div>
@@ -393,108 +393,108 @@ class StrappingTemplate extends BaseTemplate {
 
     <?php $this->printTrail(); ?>
 
-	</body>
+  </body>
 </html>
 <?php
-	}
+  }
 
-	/**
-	 * Render a series of portals
-	 *
-	 * @param $portals array
-	 */
-	private function renderPortals( $portals ) {
-		// Force the rendering of the following portals
-		if ( !isset( $portals['SEARCH'] ) ) {
-			$portals['SEARCH'] = false;
-		}
-		if ( !isset( $portals['TOOLBOX'] ) ) {
-			$portals['TOOLBOX'] = false;
-		}
-		if ( !isset( $portals['LANGUAGES'] ) ) {
-			$portals['LANGUAGES'] = true;
-		}
-		// Render portals
-		foreach ( $portals as $name => $content ) {
-			if ( $content === false )
-				continue;
+  /**
+   * Render a series of portals
+   *
+   * @param $portals array
+   */
+  private function renderPortals( $portals ) {
+    // Force the rendering of the following portals
+    if ( !isset( $portals['SEARCH'] ) ) {
+      $portals['SEARCH'] = false;
+    }
+    if ( !isset( $portals['TOOLBOX'] ) ) {
+      $portals['TOOLBOX'] = false;
+    }
+    if ( !isset( $portals['LANGUAGES'] ) ) {
+      $portals['LANGUAGES'] = true;
+    }
+    // Render portals
+    foreach ( $portals as $name => $content ) {
+      if ( $content === false )
+        continue;
 
-			echo "\n<!-- {$name} -->\n";
-			switch( $name ) {
-				case 'SEARCH':
-					break;
+      echo "\n<!-- {$name} -->\n";
+      switch( $name ) {
+        case 'SEARCH':
+          break;
 
-				case 'TOOLBOX':
-					$this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'SkinTemplateToolboxEnd' );
-					break;
+        case 'TOOLBOX':
+          $this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'SkinTemplateToolboxEnd' );
+          break;
 
-				case 'LANGUAGES':
-					if ( $this->data['language_urls'] ) {
-						$this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages' );
-					}
-					break;
+        case 'LANGUAGES':
+          if ( $this->data['language_urls'] ) {
+            $this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages' );
+          }
+          break;
 
-				default:
-					$this->renderPortal( $name, $content );
-				break;
-			}
-			echo "\n<!-- /{$name} -->\n";
-		}
-	}
+        default:
+          $this->renderPortal( $name, $content );
+        break;
+      }
+      echo "\n<!-- /{$name} -->\n";
+    }
+  }
 
-	private function renderPortal( $name, $content, $msg = null, $hook = null ) {
-		if ( $msg === null ) {
-			$msg = $name;
-		}
-		?>
+  private function renderPortal( $name, $content, $msg = null, $hook = null ) {
+    if ( $msg === null ) {
+      $msg = $name;
+    }
+    ?>
 <div class="portal" id='<?php echo Sanitizer::escapeId( "p-$name" ) ?>'<?php echo Linker::tooltip( 'p-' . $name ) ?>>
-	<h5<?php $this->html( 'userlangattributes' ) ?>><?php $msgObj = wfMessage( $msg ); echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h5>
-	<div class="body">
+  <h5<?php $this->html( 'userlangattributes' ) ?>><?php $msgObj = wfMessage( $msg ); echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h5>
+  <div class="body">
 <?php
-		if ( is_array( $content ) ): ?>
-		<ul>
+    if ( is_array( $content ) ): ?>
+    <ul>
 <?php
-			foreach( $content as $key => $val ): ?>
-			<?php echo $this->makeListItem( $key, $val ); ?>
+      foreach( $content as $key => $val ): ?>
+      <?php echo $this->makeListItem( $key, $val ); ?>
 
 <?php
-			endforeach;
-			if ( $hook !== null ) {
-				wfRunHooks( $hook, array( &$this, true ) );
-			}
-			?>
-		</ul>
+      endforeach;
+      if ( $hook !== null ) {
+        wfRunHooks( $hook, array( &$this, true ) );
+      }
+      ?>
+    </ul>
 <?php
-		else: ?>
-		<?php echo $content; /* Allow raw HTML block to be defined by extensions */ ?>
+    else: ?>
+    <?php echo $content; /* Allow raw HTML block to be defined by extensions */ ?>
 <?php
-		endif; ?>
-	</div>
+    endif; ?>
+  </div>
 </div>
 <?php
-	}
+  }
 
-	/**
-	 * Render one or more navigations elements by name, automatically reveresed
-	 * when UI is in RTL mode
-	 *
-	 * @param $elements array
-	 */
-	private function renderNavigation( $elements ) {
-		global $wgVectorUseSimpleSearch;
+  /**
+   * Render one or more navigations elements by name, automatically reveresed
+   * when UI is in RTL mode
+   *
+   * @param $elements array
+   */
+  private function renderNavigation( $elements ) {
+    global $wgVectorUseSimpleSearch;
 
-		// If only one element was given, wrap it in an array, allowing more
-		// flexible arguments
-		if ( !is_array( $elements ) ) {
-			$elements = array( $elements );
-		// If there's a series of elements, reverse them when in RTL mode
-		} elseif ( $this->data['rtl'] ) {
-			$elements = array_reverse( $elements );
-		}
-		// Render elements
-		foreach ( $elements as $name => $element ) {
-			echo "\n<!-- {$name} -->\n";
-			switch ( $element ) {
+    // If only one element was given, wrap it in an array, allowing more
+    // flexible arguments
+    if ( !is_array( $elements ) ) {
+      $elements = array( $elements );
+    // If there's a series of elements, reverse them when in RTL mode
+    } elseif ( $this->data['rtl'] ) {
+      $elements = array_reverse( $elements );
+    }
+    // Render elements
+    foreach ( $elements as $name => $element ) {
+      echo "\n<!-- {$name} -->\n";
+      switch ( $element ) {
 
         case 'EDIT':
           $navTemp = $this->data['content_actions']['edit'];
@@ -529,7 +529,7 @@ class StrappingTemplate extends BaseTemplate {
         break;
 
 
-				case 'NAMESPACES':
+        case 'NAMESPACES':
 
           $theMsg = 'namespaces';
           $theData = $this->data['namespace_urls'];
@@ -550,7 +550,7 @@ class StrappingTemplate extends BaseTemplate {
         break;
 
 
-				case 'TOOLBOX':
+        case 'TOOLBOX':
 
           $theMsg = 'toolbox';
           $theData = array_reverse($this->getToolbox());
@@ -579,10 +579,10 @@ class StrappingTemplate extends BaseTemplate {
 
           </ul>
           <?php
-				break;
+        break;
 
 
-				case 'VARIANTS':
+        case 'VARIANTS':
 
           $theMsg = 'variants';
           $theData = $this->data['variant_urls'];
@@ -600,9 +600,9 @@ class StrappingTemplate extends BaseTemplate {
             </ul>
           <?php }
 
-				break;
+        break;
 
-				case 'VIEWS':
+        case 'VIEWS':
           $theMsg = 'views';
           $theData = $this->data['view_urls'];
           ?>
@@ -618,10 +618,10 @@ class StrappingTemplate extends BaseTemplate {
               </li>
             </ul>
           <?php }
-				break;
+        break;
 
 
-				case 'ACTIONS':
+        case 'ACTIONS':
 
           $theMsg = 'actions';
           $theData = array_reverse($this->data['action_urls']);
@@ -646,10 +646,10 @@ class StrappingTemplate extends BaseTemplate {
             </ul><?php
           }
 
-				break;
+        break;
 
 
-				case 'PERSONAL':
+        case 'PERSONAL':
           $theMsg = 'personaltools';
           $theData = $this->getPersonalTools();
           $theTitle = $this->data['username'];
@@ -673,10 +673,10 @@ class StrappingTemplate extends BaseTemplate {
             </li>
           </ul>
           <?php
-				break;
+        break;
 
 
-				case 'SEARCH':
+        case 'SEARCH':
           ?>
             <form class="navbar-search" action="<?php $this->text( 'wgScript' ) ?>" id="searchform">
               <input id="searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
@@ -684,10 +684,10 @@ class StrappingTemplate extends BaseTemplate {
             </form>
 
           <?php
-				break;
+        break;
 
 
-				case 'SEARCHNAV':
+        case 'SEARCHNAV':
           ?>
         <li>
           <a id="n-Search" class="search-link"><i class="icon-search"></i>Search</a>
@@ -698,10 +698,10 @@ class StrappingTemplate extends BaseTemplate {
         </li>
 
           <?php
-				break;
+        break;
 
 
-				case 'SEARCHFOOTER':
+        case 'SEARCHFOOTER':
           ?>
             <form class="" action="<?php $this->text( 'wgScript' ) ?>" id="footer-search">
               <i class="icon-search"></i><b class="border"></b><input id="footer-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
@@ -709,10 +709,10 @@ class StrappingTemplate extends BaseTemplate {
             </form>
 
           <?php
-				break;
+        break;
 
-			}
-			echo "\n<!-- /{$name} -->\n";
-		}
-	}
+      }
+      echo "\n<!-- /{$name} -->\n";
+    }
+  }
 }
