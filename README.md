@@ -21,7 +21,7 @@ preferences and admin pages. All of MediaWiki's features are included, too.
 ## Get started
 
 1. Change to the "skins" subdirectory of your MediaWiki installation: `cd skins`
-2. Clone the repository: `git clone $FIXME:REPOHERE strapping`
+2. Clone the repository: `git clone https://github.com/OSAS/strapping-mediawiki strapping`
 3. Link the php files to the base skins directory: `ln -s strapping/S*php .`
 4. Edit `LocalSettings.php` to change the skin to "strapping":
   `$wgDefaultSkin = "strapping";`
