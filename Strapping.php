@@ -33,7 +33,7 @@ class SkinStrapping extends SkinTemplate {
 	 * @param $out OutputPage object to initialize
 	 */
 	public function initPage( OutputPage $out ) {
-		global $wgLocalStylePath;
+    global $wgLocalStylePath;
 
 		parent::initPage( $out );
 
@@ -50,6 +50,7 @@ class SkinStrapping extends SkinTemplate {
     $out->addHeadItem('responsive', '<meta name="viewport" content="width=device-width, initial-scale=1.0">');
 		$out->addModuleScripts( 'skins.strapping' );
     $out->addScript('<script type="text/javascript" src="/skins/strapping/bootstrap/js/bootstrap.js"></script>');
+    $out->addScript('<script type="text/javascript" src="/skins/strapping/strapping.js"></script>');
 	}
 
 	/**
@@ -79,6 +80,13 @@ class StrappingTemplate extends BaseTemplate {
 	 */
 	public function execute() {
 		global $wgVectorUseIconWatch;
+    global $wgSearchPlacement;
+
+    if (!$wgSearchPlacement) {
+      $wgSearchPlacement['header'] = true;
+      $wgSearchPlacement['nav'] = false;
+      $wgSearchPlacement['footer'] = false;
+    }
 
 		// Build additional attributes for navigation urls
 		$nav = $this->data['content_navigation'];
@@ -164,7 +172,9 @@ class StrappingTemplate extends BaseTemplate {
           # Namespaces, views, & variants have been merged into the page menu above
           #$this->renderNavigation( array( 'NAMESPACES', 'VIEWS', 'VARIANTS' ) ); 
 
-          $this->renderNavigation( array( 'SEARCH' ) ); 
+          if ($wgSearchPlacement['header']) {
+            $this->renderNavigation( array( 'SEARCH' ) ); 
+          }
 
           # Personal menu (at the right)
           $this->renderNavigation( array( 'PERSONAL' ) ); 
@@ -196,7 +206,7 @@ class StrappingTemplate extends BaseTemplate {
         <div id="p-logo" class="logo pull-left"><a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) ?>" <?php echo Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) ) ?>><img src="<?php $this->text( 'logopath' ); ?>" alt="<?php $this->html('sitename'); ?>"></a></div>
         <!-- /logo -->
 
-      <ul class="navigation nav nav-pills pull-right">
+      <ul class="navigation nav nav-pills pull-right searchform-disabled">
 
       <?php foreach ( $this->data['sidebar'] as $name => $content ) {
           # This is a rather hacky way to name the nav.
@@ -210,7 +220,13 @@ class StrappingTemplate extends BaseTemplate {
 
             echo "<li class='$navClasses'>" . $this->makeLink($key, $val, $options) . "</li>";
           }
-      } ?>
+      }
+
+      if ($wgSearchPlacement['nav']) {
+        $this->renderNavigation( array( 'SEARCHNAV' ) );
+      }
+
+      ?>
 
       </ul>
 
@@ -342,9 +358,11 @@ class StrappingTemplate extends BaseTemplate {
                   }
 
                   # Show the search in footer to all
-                  echo '<li>';
-                  $this->renderNavigation( array( 'SEARCHFOOTER' ) ); 
-                  echo '</li>';
+                  if ($wgSearchPlacement['footer']) {
+                    echo '<li>';
+                    $this->renderNavigation( array( 'SEARCHFOOTER' ) ); 
+                    echo '</li>';
+                  }
                 }
               ?>
             </ul>
@@ -604,7 +622,7 @@ class StrappingTemplate extends BaseTemplate {
           if (count($theData) > 0) {
             ?><ul class="nav" role="navigation">
               <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php $this->msg($theMsg) ?> <b class="caret"></b></a>
+                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo $this->data['content_actions']['nstab-main']['text'] ?> <b class="caret"></b></a>
                 <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
                   <?php foreach ( $theData as $link ):
 
@@ -657,6 +675,20 @@ class StrappingTemplate extends BaseTemplate {
               <input id="searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
               <?php echo $this->makeSearchButton( 'fulltext', array( 'id' => 'mw-searchButton', 'class' => 'searchButton btn hidden' ) ); ?>
             </form>
+
+          <?php
+				break;
+
+
+				case 'SEARCHNAV':
+          ?>
+        <li>
+          <a id="n-Search" class="search-link"><i class="icon-search"></i>Search</a>
+          <form class="navbar-search" action="<?php $this->text( 'wgScript' ) ?>" id="nav-searchform">
+                        <input id="nav-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
+                        <?php echo $this->makeSearchButton( 'fulltext', array( 'id' => 'mw-searchButton', 'class' => 'searchButton btn hidden' ) ); ?>
+          </form>
+        </li>
 
           <?php
 				break;

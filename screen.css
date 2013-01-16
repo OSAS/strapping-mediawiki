@@ -1,14 +1,13 @@
 @import url(bootstrap/css/bootstrap.css);
 @import url(bootstrap/css/bootstrap-responsive.css);
-@import url(prefs.css);
-
-/** 
- * Add a theme.css with your custom overrides (fonts, colors, etc)
- * and uncomment the following import
- */
 /*
-@import url(theme.css);
+@import url(prefs.css);
 */
+
+/* Font Awesome - http://fortawesome.github.com/Font-Awesome */
+@import url(bootstrap/awesome/css/font-awesome.css);
+
+@import url(theme.css);
 
 html {
   /* Always show a scrollbar, to prevent jumping content */
@@ -16,8 +15,12 @@ html {
   overflow-y: scroll;
 }
 
+a:not([name]) {
+  cursor: pointer;
+}
+
 /* Disable selection */
-.nav,
+.nav a,
 .dropdown-toggle,
 .dropdown-menu,
 .btn,
@@ -45,6 +48,100 @@ html {
 #userbar .navbar-search + .nav {
   margin-left: 10px;
 }
+
+
+.navigation a,
+.navigation form,
+.navigation input {
+  transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+}
+
+/* Search in the navigation */
+.navigation a {
+  position: relative;
+  z-index: 2;
+}
+.navigation .navbar-search {
+  display: inline;
+  float: none;
+  position: relative;
+  top: -2.25em;
+}
+
+@media (min-width: 768px) {
+  .searchform-enabled input,
+  .searchform-disabled a.search-link {
+  }
+
+  .searchform-disabled input,
+  .searchform-enabled a.search-link i,
+  .searchform-enabled a.search-link {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+  }
+  .searchform-enabled a.search-link i {
+    position: absolute;
+  }
+}
+
+@media (max-width: 12em) {
+  .navigation {
+    clear: both;
+    float: none;
+  }
+  .navigation > li {
+    float: none;
+    display: inline;
+  }
+  .navigation > li > a {
+    padding: 10px 20px;
+    display: block;
+  }
+  .navigation .search-link {
+    display: none !important;
+  }
+  .navigation .navbar-search {
+    display: block;
+    padding: 0;
+    top: 0 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #page-header .searchform-enabled a {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1ex;
+    padding-right: 1ex;
+  }
+
+  .searchform-enabled a.search-link {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    /*
+    padding: 0;
+    width: 0;
+    */
+  }
+}
+
+@media (max-width: 767px) {
+  #userbar {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+}
+
+
+.nolayout .firstHeading {
+  margin-top: 10px;
+}
+
 
 /* Fix mediawiki radio & checkbox */
 label {
@@ -89,6 +186,40 @@ input + label {
   }
 }
 
+/* Footer */
+#footer .row  {
+  text-align: center; 
+}
+
+#footer .row  a {
+  font-weight: normal;
+}
+
+#footer ul,
+#footer li {
+  padding: 0;
+  list-style: none;
+}
+#footer ul {
+  display: block;
+  margin: 2em auto;
+}
+#footer li {
+  display: inline;
+  margin: 1ex;
+}
+
+#footer-search {
+  display: inline;
+  position: relative;
+  top: 2px;
+}
+#footer-search .icon-search {
+  margin: 0 0 3px 6px;
+  opacity: 0.25;
+}
+
+
 /* Make the edit form larger */
 #editform textarea,
 #wpTextbox1
@@ -120,6 +251,200 @@ input + label {
 .row + .row {
   margin-top: 40px;
 }
+
+input, button, select, textarea {
+  font: inherit;
+}
+
+/* Search */
+#mw-search-top-table {
+  margin: 3em auto 0;
+}
+#mw-search-top-table input {
+  vertical-align: top;
+}
+#mw-search-top-table input[type=submit] {
+  padding: 2px 6px;
+}
+
+#content .search-types li {
+  margin-top: 0;
+}
+
+.mw-search-formheader {
+  background: none;
+  border: none;
+}
+
+.search-types {
+  float: none;
+  padding: 0;
+}
+
+.mw-search-createlink {
+  /* Redundant, if there's a page with containing the name anyway */
+  display: none;
+}
+
+.mw-search-results {
+  margin: 20px;
+}
+
+.searchresult {
+  color: #555;
+}
+
+.searchmatch {
+  color: #333;
+}
+
+.mw-search-result-data {
+  color: #999;
+}
+
+.mw-search-nonefound {
+  color: #999;
+  font-size: 2em;
+  padding: 1em;
+  text-align: center;
+}
+
+.mw-search-nonefound:after{
+  content: "ಠ ̯ಠ";
+  color: #ccc;
+  margin-left: 3ex;
+}
+
+.mw-search-pager-bottom {
+  position: relative;
+  color: transparent;
+}
+.mw-search-pager-bottom a {
+  float: left;
+  padding: 0 20px;
+}
+
+.mw-numlink {
+  display: none;
+}
+
+/* Preferences */
+#preferences .mainLegend {
+  display: none;
+}
+
+#preftoc {
+  margin: 40px 20px -2px;
+}
+
+#preferences {
+  border: 1px solid #ccc;
+  margin: 0 20px;
+}
+
+#preftoc ul,
+#preftoc li {
+  display: inline;
+  list-style: none;
+}
+#preftoc li a {
+  position: relative;
+  z-index: 2;
+  font: inherit;
+  margin: 0;
+  padding: 8px 15px;
+  display: inline-block;
+}
+#preftoc li.selected a {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  color: inherit;
+  cursor: default;
+  padding: 7px 14px;
+}
+#preferences fieldset.prefsection {
+  margin: 0;
+  padding: 40px;
+}
+
+#preferences legend {
+  border-bottom: none;
+}
+
+#preferences fieldset + fieldset > legend {
+  padding-top: 40px;
+}
+
+#preferences .mw-label label {
+  white-space: nowrap;
+  margin: 0;
+  color: #777;
+}
+
+#preferences td {
+  padding: 5px;
+}
+
+#preferences .htmlform-tip {
+  color: #999;
+  padding: 1em 0 3em 12em;
+}
+
+#preferences div.mw-prefs-buttons {
+  margin: 20px auto 0;
+  padding: 40px 40px 20px;
+  text-align: center;
+  overflow: hidden;
+}
+.mw-prefs-buttons a,
+.mw-prefs-buttons input {
+  font: inherit;
+  padding: 3px 15px;
+}
+.mw-prefs-buttons a {
+  padding: 8px 20px;
+  float: left;
+}
+.mw-prefs-buttons input {
+  float: right;
+}
+
+
+/* History */
+
+#contentSub {
+}
+
+#contentSub br {
+  display: none;
+}
+
+#mw-revision-info,
+#mw-revision-nav {
+  background: #f6f6f6;
+  border: 1px solid #eee;
+  display: block;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  width: auto;
+}
+
+#mw-revision-info {
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  font-size: 16px;
+  padding-bottom: 0.25em;
+}
+#mw-revision-nav {
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
 
 /* Add some extra vertical spacing for phones */
 @media (max-width: 767px) {
