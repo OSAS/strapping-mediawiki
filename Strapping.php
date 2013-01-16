@@ -341,8 +341,12 @@ class StrappingTemplate extends BaseTemplate {
       <!-- footer -->
       <div id="footer" class="footer container"<?php $this->html( 'userlangattributes' ) ?>>
         <div class="row">
-          <?php foreach( $this->getFooterLinks() as $category => $links ): ?>
-            <?php if ($category === 'info') { continue; } ?>
+<?php
+      $footerLinks = $this->getFooterLinks();
+
+      if (is_array($footerLinks)) {
+        foreach($footerLinks as $category => $links ):
+          if ($category === 'info') { continue; } ?>
 
             <ul id="footer-<?php echo $category ?>">
               <?php foreach( $links as $link ): ?>
@@ -354,7 +358,7 @@ class StrappingTemplate extends BaseTemplate {
                   # Show sign in link, if not signed in
                   if (!$this->data['loggedin']) {
                     $personalTemp = $this->getPersonalTools();
-                    ?><li id="pt-login"><a href="<?php echo $personalTemp['login']['links'][0]['href'] ?>"><?php echo $personalTemp['login']['links'][0]['text']; ?></a></li><?
+                    ?><li id="pt-login"><a href="<?php echo $personalTemp['login']['links'][0]['href'] ?>"><?php echo $personalTemp['login']['links'][0]['text']; ?></a></li><?php
                   }
 
                   # Show the search in footer to all
@@ -366,7 +370,10 @@ class StrappingTemplate extends BaseTemplate {
                 }
               ?>
             </ul>
-          <?php endforeach; ?>
+          <?php 
+              endforeach; 
+            }
+          ?>
           <?php $footericons = $this->getFooterIcons("icononly");
           if ( count( $footericons ) > 0 ): ?>
             <ul id="footer-icons" class="noprint">
