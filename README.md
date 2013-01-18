@@ -129,4 +129,4 @@ you can attach any Bootstrap classes to `div`s.
 
 Strapping is open source, and built on open source projects.
 
-Please check out the [LICENSE file](LICENSE) for details.
+Please check out the [LICENSE file](https://github.com/OSAS/strapping-mediawiki/blob/master/LICENSE) for details.
