@@ -18,6 +18,17 @@ Strapping also has complete coverage for all of MediaWiki, including the user
 preferences and admin pages. All of MediaWiki's features are included, too.
 
 
+## Origin (and demo) of Strapping
+
+Strapping was made from the need of reworking oVirt.org look attractive, have
+one place for everyone to edit content (instead of a mix of WordPress and
+MediaWiki), and have an easy-to-work with site so that anyone could either
+stick to MediaWiki marked up pages or do some more advanced layout (with
+columns, etc.) using Bootstrap.
+
+You can see Strapping in action by visiting http://oVirt.org/
+
+
 ## Get started
 
 1. Change to the "skins" subdirectory of your MediaWiki installation: `cd skins`
