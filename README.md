@@ -21,13 +21,30 @@ preferences and admin pages. All of MediaWiki's features are included, too.
 ## Get started
 
 1. Change to the "skins" subdirectory of your MediaWiki installation: `cd skins`
-2. Clone the repository: `git clone https://github.com/OSAS/strapping-mediawiki strapping`
+2. Clone the repository: 
+   `git clone https://github.com/OSAS/strapping-mediawiki strapping`
 3. Link the php files to the base skins directory: `ln -s strapping/S*php .`
 4. Edit `LocalSettings.php` to change the skin to "strapping":
   `$wgDefaultSkin = "strapping";`
-5. While in `LocalSettings.php`, add the following to disable editing when not signed in: `$wgGroupPermissions['*']['edit'] = false;`
-6. Edit the wiki page `MediaWiki:Sidebar` with your web browser to change your navigation links.
-7. Customize the skin to make the site look how you'd want. (See below.)
+5. Edit the wiki page `MediaWiki:Sidebar` with your web browser to change your
+   navigation links.
+6. Customize the skin to make the site look how you'd want. (See
+   "Customization", below.)
+
+### Optional configuration
+
+#### Wiki-as-a-website (no edit links or toolbar)
+
+Strapping was originally designed to be used in a wiki-as-a-website mode,
+where, to someone not signed in, it would be unable to notice that the site
+is powered by MediaWiki. (If someone is signed in and has access, then
+"edit" links and the toolbar appear.)
+
+You can either leave full edit access available to anyone (even anonymous
+editors), or lock it down a bit.
+
+To operate in this mode, add the following to `LocalSettings.php`:
+`$wgGroupPermissions['*']['edit'] = false;`
 
 
 ## Customization
