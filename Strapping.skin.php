@@ -637,7 +637,7 @@ class StrappingTemplate extends BaseTemplate {
             foreach( $content as $key => $val ) {
               $navClasses = '';
 
-              if (array_key_exists('view', $this->data['content_navigation']['views'] && $this->data['content_navigation']['views']['view']['href'] == $val['href']) {
+              if (array_key_exists('view', $this->data['content_navigation']['views']) && $this->data['content_navigation']['views']['view']['href'] == $val['href']) {
                 $navClasses = 'active';
               }?>
 
