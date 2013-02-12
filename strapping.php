@@ -12,7 +12,7 @@ if( !defined( 'MEDIAWIKI' ) ) die( "This is an extension to the MediaWiki packag
 $wgExtensionCredits['skin'][] = array(
         'path' => __FILE__,
         'name' => 'Strapping',
-        'url' => "[...]",
+        'url' => "https://github.com/OSAS/strapping-mediawiki",
         'author' => 'Garrett LeSage',
         'descriptionmsg' => 'strapping-desc',
 );
