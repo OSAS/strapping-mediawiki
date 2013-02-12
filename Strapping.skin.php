@@ -185,19 +185,8 @@ class StrappingTemplate extends BaseTemplate {
 
       <ul class="navigation nav nav-pills pull-right searchform-disabled">
 
-      <?php foreach ( $this->data['sidebar'] as $name => $content ) {
-          # This is a rather hacky way to name the nav.
-          # (There are probably bugs here...) 
-          foreach( $content as $key => $val ) {
-            $navClasses = '';
-
-            if ($this->data['content_navigation']['views']['view']['href'] == $val['href']) {
-              $navClasses = 'active';
-            }
-
-            echo "<li class='$navClasses'>" . $this->makeLink($key, $val, $options) . "</li>";
-          }
-      }
+      <?php
+      $this->renderNavigation( array( 'SIDEBAR' ) );
 
       if ($wgSearchPlacement['nav']) {
         $this->renderNavigation( array( 'SEARCHNAV' ) );
@@ -374,6 +363,7 @@ class StrappingTemplate extends BaseTemplate {
    */
   private function renderNavigation( $elements ) {
     global $wgVectorUseSimpleSearch;
+    global $wgStrappingSkinDisplaySidebarNavigation;
 
     // If only one element was given, wrap it in an array, allowing more
     // flexible arguments
@@ -632,6 +622,31 @@ class StrappingTemplate extends BaseTemplate {
           <?php
         break;
 
+
+        case 'SIDEBAR':
+          foreach ( $this->data['sidebar'] as $name => $content ) {
+            if ( !$content ) {
+              continue;
+            }
+            if ( $wgStrappingSkinDisplaySidebarNavigation ) { ?>
+              <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo htmlspecialchars( $name ); ?><b class="caret"></b></a>
+                <ul aria-labelledby="<?php echo htmlspecialchars( $name ); ?>" role="menu" class="dropdown-menu"><?php
+            }
+            # This is a rather hacky way to name the nav.
+            # (There are probably bugs here...) 
+            foreach( $content as $key => $val ) {
+              $navClasses = '';
+
+              if ($this->data['content_navigation']['views']['view']['href'] == $val['href']) {
+                $navClasses = 'active';
+              }?>
+
+                <li class='$navClasses'><?php echo $this->makeLink($key, $val); ?></li><?php
+            }
+            if ( $wgStrappingSkinDisplaySidebarNavigation ) {?>                </ul>              </li><?php
+            }          }
+        break;
 
         case 'LANGUAGES':
           $theMsg = 'otherlanguages';
