@@ -49,8 +49,6 @@ class SkinStrapping extends SkinTemplate {
 
     $out->addHeadItem('responsive', '<meta name="viewport" content="width=device-width, initial-scale=1.0">');
     $out->addModuleScripts( 'skins.strapping' );
-    $out->addScript('<script type="text/javascript" src="/skins/strapping/bootstrap/js/bootstrap.js"></script>');
-    $out->addScript('<script type="text/javascript" src="/skins/strapping/strapping.js"></script>');
   }
 
   /**
@@ -60,10 +58,7 @@ class SkinStrapping extends SkinTemplate {
    */
   function setupSkinUserCss( OutputPage $out ){
     parent::setupSkinUserCss( $out );
-    /*
-      $out->addModuleStyles( 'skins.strapping' );
-     */
-    $out->addStyle( 'strapping/screen.css', 'screen' );
+    $out->addModuleStyles( 'skins.strapping' );
   }
 }
 

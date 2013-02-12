@@ -36,7 +36,7 @@ You can see a (customized) instance of Strapping in action by visiting http://oV
 1. Change to the "skins" subdirectory of your MediaWiki installation: `cd skins`
 2. Clone the repository: 
    `git clone https://github.com/OSAS/strapping-mediawiki strapping`
-3. Link the php files to the base skins directory: `ln -s strapping/S*php .`
+3. Edit `LocalSettings.php` to add: `require_once( "$IP/skins/strapping/strapping.php" );`
 4. Edit `LocalSettings.php` to change the skin to "strapping":
   `$wgDefaultSkin = "strapping";`
 5. Edit the wiki page `MediaWiki:Sidebar` with your web browser
