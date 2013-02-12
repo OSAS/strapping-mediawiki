@@ -393,7 +393,7 @@ class StrappingTemplate extends BaseTemplate {
 
           if ($navTemp) { ?>
             <div class="actions pull-left nav">
-                <a href="<?php echo $navTemp['href']; ?>" class="btn"><i class="icon-edit"></i> <?php echo $navTemp['text']; ?></a>
+                <a id="b-edit" href="<?php echo $navTemp['href']; ?>" class="btn"><i class="icon-edit"></i> <?php echo $navTemp['text']; ?></a>
             </div>
           <?php } 
         break;
