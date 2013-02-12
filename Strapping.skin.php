@@ -72,6 +72,7 @@ class StrappingTemplate extends BaseTemplate {
     global $wgStrappingSkinLogoLocation;
     global $wgStrappingSkinLoginLocation;
     global $wgStrappingSkinAnonNavbar;
+    global $wgStrappingSkinUseStandardLayout;
 
     if (!$wgSearchPlacement) {
       $wgSearchPlacement['header'] = true;
@@ -216,16 +217,6 @@ class StrappingTemplate extends BaseTemplate {
       <?php endif; ?>
       <!-- bodyContent -->
       <div id="bodyContent">
-        <?php if ( $this->data['isarticle'] ): ?>
-        <?php endif; ?>
-        <!-- subtitle -->
-        <div id="contentSub"<?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
-        <!-- /subtitle -->
-        <?php if ( $this->data['undelete'] ): ?>
-        <!-- undelete -->
-        <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
-        <!-- /undelete -->
-        <?php endif; ?>
         <?php if( $this->data['newtalk'] ): ?>
         <!-- newtalk -->
         <div class="usermessage"><?php $this->html( 'newtalk' )  ?></div>
@@ -240,23 +231,42 @@ class StrappingTemplate extends BaseTemplate {
         <!-- /jumpto -->
         <?php endif; ?>
 
-        <!-- bodycontent -->
-        <?php # Peek into the body content, to see if a custom layout is used ?>
-        <?php if (preg_match("/class.*row/i", $this->data['bodycontent'])) { ?>
-          <?php # If there's a custom layout, the H1 and layout is up to the page ?>
-          <div class="layout">
-            <?php $this->html( 'bodycontent' ); ?>
-          </div>
-        <?php } else { ?>
-          <?php # If there's no custom layout, then we automagically add one ?>
-          <div class="row nolayout"><div class="offset1 span10">
+        <!-- innerbodycontent -->
+        <?php # Peek into the body content, to see if a custom layout is used
+        if ($wgStrappingSkinUseStandardLayout || preg_match("/class.*row/i", $this->data['bodycontent'])) { 
+          # If there's a custom layout, the H1 and layout is up to the page ?>
+          <div id="innerbodycontent" class="layout">
             <h1 id="firstHeading" class="firstHeading page-header">
               <span dir="auto"><?php $this->html( 'title' ) ?></span>
             </h1>
+            <!-- subtitle -->
+            <div id="contentSub" <?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
+            <!-- /subtitle -->
+            <?php if ( $this->data['undelete'] ): ?>
+            <!-- undelete -->
+            <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
+            <!-- /undelete -->
+            <?php endif; ?>
+            <?php $this->html( 'bodycontent' ); ?>
+          </div>
+        <?php } else {
+          # If there's no custom layout, then we automagically add one ?>
+          <div id="innerbodycontent" class="row nolayout"><div class="offset1 span10">
+            <h1 id="firstHeading" class="firstHeading page-header">
+              <span dir="auto"><?php $this->html( 'title' ) ?></span>
+            </h1>
+            <!-- subtitle -->
+            <div id="contentSub" <?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
+            <!-- /subtitle -->
+            <?php if ( $this->data['undelete'] ): ?>
+            <!-- undelete -->
+            <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
+            <!-- /undelete -->
+            <?php endif; ?>
             <?php $this->html( 'bodycontent' ); ?>
           </div></div>
         <?php } ?>
-        <!-- /bodycontent -->
+        <!-- /innerbodycontent -->
 
         <?php if ( $this->data['printfooter'] ): ?>
         <!-- printfooter -->
