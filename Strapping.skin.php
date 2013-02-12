@@ -390,7 +390,9 @@ class StrappingTemplate extends BaseTemplate {
       switch ( $element ) {
 
         case 'EDIT':
-          $navTemp = $this->data['content_actions']['edit'];
+          if ( !array_key_exists('edit', $this->data['content_actions']) ) {
+            break;
+          }
 
           if ($navTemp) { ?>
             <div class="actions pull-left nav">
@@ -634,6 +636,9 @@ class StrappingTemplate extends BaseTemplate {
             foreach( $content as $key => $val ) {
               $navClasses = '';
 
+              if ( array_key_exists('view', $this->data['content_navigation']['views']) ) {
+                continue;
+              }
               if ($this->data['content_navigation']['views']['view']['href'] == $val['href']) {
                 $navClasses = 'active';
               }?>
