@@ -400,12 +400,18 @@ class StrappingTemplate extends BaseTemplate {
 
 
         case 'PAGE':
-          $theMsg = 'thispage';
+          $theMsg = 'namespaces';
           $theData = array_merge($this->data['namespace_urls'], $this->data['view_urls']);
           ?>
           <ul class="nav" role="navigation">
             <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php $this->html($theMsg) ?> <b class="caret"></b></a>
+              <?php
+              foreach ( $theData as $link ) {
+                  if ( array_key_exists( 'context', $link ) && $link['context'] == 'subject' ) {
+              ?>
+              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo htmlspecialchars( $link['text'] ); ?> <b class="caret"></b></a>
+                  <?php } ?>
+              <?php } ?>
               <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
 
                 <?php 
@@ -500,7 +506,7 @@ class StrappingTemplate extends BaseTemplate {
           if (count($theData) > 0) {
             ?><ul class="nav" role="navigation">
               <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo $this->data['content_actions']['nstab-main']['text'] ?> <b class="caret"></b></a>
+                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo $this->msg( 'actions' ); ?> <b class="caret"></b></a>
                 <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
                   <?php foreach ( $theData as $link ):
 
