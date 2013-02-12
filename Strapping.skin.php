@@ -645,20 +645,19 @@ class StrappingTemplate extends BaseTemplate {
 
         case 'LANGUAGES':
           $theMsg = 'otherlanguages';
-          $theData = $this->data['language_urls']; ?> 
+          $theData = $this->data['language_urls']; ?>
           <ul class="nav" role="navigation">
-            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) e
-              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo $this->html($theMsg) ?
-              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $thi
+            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo $this->html($theMsg) ?> <b class="caret"></b></a>
+              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
 
               <?php foreach( $content as $key => $val ) { ?>
                 <li class='$navClasses'><?php echo $this->makeLink($key, $val, $options); ?></li><?php
-             }?>
+              }?>
 
-              </ul>
-            </li>
+              </ul>            </li>
           </ul><?php
-        break;
+          break;
       }
       echo "\n<!-- /{$name} -->\n";
     }
