@@ -393,6 +393,7 @@ class StrappingTemplate extends BaseTemplate {
           if ( !array_key_exists('edit', $this->data['content_actions']) ) {
             break;
           }
+          $navTemp = $this->data['content_actions']['edit'];
 
           if ($navTemp) { ?>
             <div class="actions pull-left nav">
