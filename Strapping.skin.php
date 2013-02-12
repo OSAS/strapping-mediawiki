@@ -70,6 +70,7 @@ class StrappingTemplate extends BaseTemplate {
     global $wgVectorUseIconWatch;
     global $wgSearchPlacement;
     global $wgStrappingSkinLogoLocation;
+    global $wgStrappingSkinLoginLocation;
 
     if (!$wgSearchPlacement) {
       $wgSearchPlacement['header'] = true;
@@ -316,7 +317,7 @@ class StrappingTemplate extends BaseTemplate {
                 if ($category === 'places') {
 
                   # Show sign in link, if not signed in
-                  if (!$this->data['loggedin']) {
+                  if ($wgStrappingSkinLoginLocation == 'footer' && !$this->data['loggedin']) {
                     $personalTemp = $this->getPersonalTools();
                     ?><li id="pt-login"><a href="<?php echo $personalTemp['login']['links'][0]['href'] ?>"><?php echo $personalTemp['login']['links'][0]['text']; ?></a></li><?php
                   }
@@ -624,24 +625,53 @@ class StrappingTemplate extends BaseTemplate {
           $theMsg = 'personaltools';
           $theData = $this->getPersonalTools();
           $theTitle = $this->data['username'];
+          $showPersonal = false;
+          foreach ( $theData as $key => $item ) {
+            if ( !preg_match('/(notifications|login|createaccount)/', $key) ) {
+              $showPersonal = true;
+            }
+          }
 
           ?>
           <ul class="nav pull-right" role="navigation">
-            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <li class="dropdown" id="p-notifications" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <?php if ( array_key_exists('notifications', $theData) ) {
+              echo $this->makeListItem( 'notifications', $theData['notifications'] );
+            } ?>
+            </li>
+            <?php if ( $wgStrappingSkinLoginLocation == 'navbar' ): ?>
+            <li class="dropdown" id="p-createaccount" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+              <?php if ( array_key_exists('createaccount', $theData) ) {
+                echo $this->makeListItem( 'createaccount', $theData['createaccount'] );
+              } ?>
+            </li>
+            <li class="dropdown" id="p-login" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <?php if ( array_key_exists('login', $theData) ) {
+                echo $this->makeListItem( 'login', $theData['login'] );
+            } ?>
+            </li>
+            <?php endif; ?>
+            <?php
+            if ( $showPersonal ):
+            ?>
+            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( !$showPersonal ) echo ' emptyPortlet'; ?>">
               <a data-toggle="dropdown" class="dropdown-toggle" role="button">
                 <i class="icon-user"></i>
-                <?php echo $theImg . $theTitle; ?> <b class="caret"></b></a>
+                <?php echo $theTitle; ?> <b class="caret"></b></a>
               <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
-              <?php foreach( $this->getPersonalTools() as $key => $item ) {
+              <?php foreach( $theData as $key => $item ) {
 
                 if (preg_match('/preferences|logout/', $key)) {
                   echo '<li class="divider"></li>';
+                } else if ( preg_match('/(notifications|login|createaccount)/', $key) ) {
+                  continue;
                 }
 
                 echo $this->makeListItem( $key, $item );
               } ?>
               </ul>
             </li>
+            <?php endif; ?>
           </ul>
           <?php
         break;
