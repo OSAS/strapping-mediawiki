@@ -411,27 +411,6 @@ class StrappingTemplate extends BaseTemplate {
         break;
 
 
-        case 'NAMESPACES':
-
-          $theMsg = 'namespaces';
-          $theData = $this->data['namespace_urls'];
-
-          ?>
-          <ul class="nav" role="navigation">
-            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-              <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php $this->msg($theMsg) ?> <b class="caret"></b></a>
-              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
-                <?php foreach ( $theData as $link ): ?>
-                  <li<?php echo $link['attributes'] ?>><a href="<?php echo htmlspecialchars( $link['href'] ) ?>" <?php echo $link['key'] ?> tabindex="-1"><?php echo htmlspecialchars( $link['text'] ) ?></a></li>
-                <?php endforeach; ?>
-              </ul>
-            </li>
-          </ul>
-
-          <?php
-        break;
-
-
         case 'TOOLBOX':
 
           $theMsg = 'toolbox';
