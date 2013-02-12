@@ -373,6 +373,7 @@ class StrappingTemplate extends BaseTemplate {
    */
   private function renderNavigation( $elements ) {
     global $wgVectorUseSimpleSearch;
+    global $wgStrappingSkinLoginLocation;
     global $wgStrappingSkinDisplaySidebarNavigation;
 
     // If only one element was given, wrap it in an array, allowing more
