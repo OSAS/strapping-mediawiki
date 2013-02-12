@@ -138,6 +138,11 @@ class StrappingTemplate extends BaseTemplate {
           # Page header & menu
           $this->renderNavigation( array( 'PAGE' ) );
 
+          # This content in other languages
+          if ( $this->data['language_urls'] ) {
+            $this->renderNavigation( array( 'LANGUAGES' ) );
+          }
+
           # Edit button
           $this->renderNavigation( array( 'EDIT' ) ); 
           
@@ -290,16 +295,6 @@ class StrappingTemplate extends BaseTemplate {
     </section>
     <!-- /content -->
 
-    <?php if ($this->data['loggedin']) { ?>
-
-      <!-- panel -->
-      <div id="mw-panel" class="noprint">
-        <?php $this->renderPortals(); ?>
-      </div>
-      <!-- /panel -->
-
-    <?php } ?>
-
       <!-- footer -->
       <div id="footer" class="footer container"<?php $this->html( 'userlangattributes' ) ?>>
         <div class="row">
@@ -357,82 +352,6 @@ class StrappingTemplate extends BaseTemplate {
 
   </body>
 </html>
-<?php
-  }
-
-  /**
-   * Render a series of portals
-   *
-   * @param $portals array
-   */
-  private function renderPortals( $portals ) {
-    // Force the rendering of the following portals
-    if ( !isset( $portals['SEARCH'] ) ) {
-      $portals['SEARCH'] = false;
-    }
-    if ( !isset( $portals['TOOLBOX'] ) ) {
-      $portals['TOOLBOX'] = false;
-    }
-    if ( !isset( $portals['LANGUAGES'] ) ) {
-      $portals['LANGUAGES'] = true;
-    }
-    // Render portals
-    foreach ( $portals as $name => $content ) {
-      if ( $content === false )
-        continue;
-
-      echo "\n<!-- {$name} -->\n";
-      switch( $name ) {
-        case 'SEARCH':
-          break;
-
-        case 'TOOLBOX':
-          $this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'SkinTemplateToolboxEnd' );
-          break;
-
-        case 'LANGUAGES':
-          if ( $this->data['language_urls'] ) {
-            $this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages' );
-          }
-          break;
-
-        default:
-          $this->renderPortal( $name, $content );
-        break;
-      }
-      echo "\n<!-- /{$name} -->\n";
-    }
-  }
-
-  private function renderPortal( $name, $content, $msg = null, $hook = null ) {
-    if ( $msg === null ) {
-      $msg = $name;
-    }
-    ?>
-<div class="portal" id='<?php echo Sanitizer::escapeId( "p-$name" ) ?>'<?php echo Linker::tooltip( 'p-' . $name ) ?>>
-  <h5<?php $this->html( 'userlangattributes' ) ?>><?php $msgObj = wfMessage( $msg ); echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h5>
-  <div class="body">
-<?php
-    if ( is_array( $content ) ): ?>
-    <ul>
-<?php
-      foreach( $content as $key => $val ): ?>
-      <?php echo $this->makeListItem( $key, $val ); ?>
-
-<?php
-      endforeach;
-      if ( $hook !== null ) {
-        wfRunHooks( $hook, array( &$this, true ) );
-      }
-      ?>
-    </ul>
-<?php
-    else: ?>
-    <?php echo $content; /* Allow raw HTML block to be defined by extensions */ ?>
-<?php
-    endif; ?>
-  </div>
-</div>
 <?php
   }
 
@@ -713,6 +632,23 @@ class StrappingTemplate extends BaseTemplate {
           <?php
         break;
 
+
+        case 'LANGUAGES':
+          $theMsg = 'otherlanguages';
+          $theData = $this->data['language_urls']; ?> 
+          <ul class="nav" role="navigation">
+            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) e
+              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo $this->html($theMsg) ?
+              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $thi
+
+              <?php foreach( $content as $key => $val ) { ?>
+                <li class='$navClasses'><?php echo $this->makeLink($key, $val, $options); ?></li><?php
+             }?>
+
+              </ul>
+            </li>
+          </ul><?php
+        break;
       }
       echo "\n<!-- /{$name} -->\n";
     }
