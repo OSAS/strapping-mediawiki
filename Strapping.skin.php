@@ -69,6 +69,7 @@ class StrappingTemplate extends BaseTemplate {
   public function execute() {
     global $wgVectorUseIconWatch;
     global $wgSearchPlacement;
+    global $wgStrappingSkinLogoLocation;
 
     if (!$wgSearchPlacement) {
       $wgSearchPlacement['header'] = true;
@@ -128,7 +129,10 @@ class StrappingTemplate extends BaseTemplate {
     <div style="width: auto;" class="container">
 
       <div class="pull-left">
-        <?php 
+        <?php
+          if ( $wgStrappingSkinLogoLocation == 'navbar' ) {
+            $this->renderLogo();
+          }
           # Page header & menu
           $this->renderNavigation( array( 'PAGE' ) );
 
@@ -167,9 +171,10 @@ class StrappingTemplate extends BaseTemplate {
     <div id="page-header" class="container">
       <section class="span12">
 
-        <!-- logo -->
-        <div id="p-logo" class="logo pull-left"><a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) ?>" <?php echo Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) ) ?>><img src="<?php $this->text( 'logopath' ); ?>" alt="<?php $this->html('sitename'); ?>"></a></div>
-        <!-- /logo -->
+      <?php
+      if ( $wgStrappingSkinLogoLocation == 'bodycontent' ) {
+        $this->renderLogo();
+      } ?>
 
       <ul class="navigation nav nav-pills pull-right searchform-disabled">
 
@@ -426,6 +431,17 @@ class StrappingTemplate extends BaseTemplate {
     endif; ?>
   </div>
 </div>
+<?php
+  }
+
+  /**
+   * Render logo
+   */
+  private function renderLogo() {
+        $mainPageLink = $this->data['nav_urls']['mainpage']['href'];
+        $toolTip = Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) );
+?>
+                  <ul class="nav" role="navigation"><li id="p-logo"><a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) ?>" <?php echo Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) ) ?>><img src="<?php $this->text( 'logopath' ); ?>" alt="<?php $this->html('sitename'); ?>"></a><li></ul>
 <?php
   }
 
