@@ -378,6 +378,7 @@ class StrappingTemplate extends BaseTemplate {
     global $wgVectorUseSimpleSearch;
     global $wgStrappingSkinLoginLocation;
     global $wgStrappingSkinDisplaySidebarNavigation;
+    global $wgStrappingSkinSidebarItemsInNavbar;
 
     // If only one element was given, wrap it in an array, allowing more
     // flexible arguments
@@ -660,6 +661,9 @@ class StrappingTemplate extends BaseTemplate {
           foreach ( $this->data['sidebar'] as $name => $content ) {
             if ( !$content ) {
               continue;
+            }
+            if ( !in_array( $name, $wgStrappingSkinSidebarItemsInNavbar ) ) {
+                    continue;
             }
             $msgObj = wfMessage( $name );
             $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $name );
