@@ -662,7 +662,7 @@ class StrappingTemplate extends BaseTemplate {
             if ( !$content ) {
               continue;
             }
-            if ( !in_array( $name, $wgStrappingSkinSidebarItemsInNavbar ) ) {
+            if ( in_array( $name, $wgStrappingSkinSidebarItemsInNavbar ) ) {
                     continue;
             }
             $msgObj = wfMessage( $name );
