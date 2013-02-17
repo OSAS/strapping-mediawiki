@@ -21,13 +21,6 @@ class SkinStrapping extends SkinTemplate {
   var $skinname = 'strapping', $stylename = 'strapping',
     $template = 'StrappingTemplate', $useHeadElement = true;
 
-  function tocList($toc) {
-    $this->savedToc = parent::tocList($toc);
-
-    #return "<section class='mytocthing'>" . $this-savedToc . "</section>";
-    return "";
-  }
-
   /**
    * Initializes output page and sets up skin-specific parameters
    * @param $out OutputPage object to initialize
@@ -49,8 +42,6 @@ class SkinStrapping extends SkinTemplate {
 
     $out->addHeadItem('responsive', '<meta name="viewport" content="width=device-width, initial-scale=1.0">');
     $out->addModuleScripts( 'skins.strapping' );
-    $out->addScript('<script type="text/javascript" src="/skins/strapping/bootstrap/js/bootstrap.js"></script>');
-    $out->addScript('<script type="text/javascript" src="/skins/strapping/strapping.js"></script>');
   }
 
   /**
@@ -60,10 +51,7 @@ class SkinStrapping extends SkinTemplate {
    */
   function setupSkinUserCss( OutputPage $out ){
     parent::setupSkinUserCss( $out );
-    /*
-      $out->addModuleStyles( 'skins.strapping' );
-     */
-    $out->addStyle( 'strapping/screen.css', 'screen' );
+    $out->addModuleStyles( 'skins.strapping' );
   }
 }
 
@@ -81,6 +69,10 @@ class StrappingTemplate extends BaseTemplate {
   public function execute() {
     global $wgVectorUseIconWatch;
     global $wgSearchPlacement;
+    global $wgStrappingSkinLogoLocation;
+    global $wgStrappingSkinLoginLocation;
+    global $wgStrappingSkinAnonNavbar;
+    global $wgStrappingSkinUseStandardLayout;
 
     if (!$wgSearchPlacement) {
       $wgSearchPlacement['header'] = true;
@@ -130,30 +122,27 @@ class StrappingTemplate extends BaseTemplate {
     $this->data['action_urls'] = $nav['actions'];
     $this->data['variant_urls'] = $nav['variants'];
 
-    // Reverse horizontally rendered navigation elements
-    # We're changing theese vertically, 
-    # so flipping them shouldn't be necessary
-    if ( $this->data['rtl'] ) {
-      #$this->data['view_urls'] =
-        #array_reverse( $this->data['view_urls'] );
-      #$this->data['namespace_urls'] =
-        #array_reverse( $this->data['namespace_urls'] );
-      #$this->data['personal_urls'] =
-        #array_reverse( $this->data['personal_urls'] );
-    }
     // Output HTML Page
     $this->html( 'headelement' );
 ?>
 
-<?php if ($this->data['loggedin']) { ?>
+<?php if ( $wgStrappingSkinAnonNavbar || $this->data['loggedin'] ) { ?>
 <div id="userbar" class="navbar navbar-static">
   <div class="navbar-inner">
     <div style="width: auto;" class="container">
 
       <div class="pull-left">
-        <?php 
+        <?php
+          if ( $wgStrappingSkinLogoLocation == 'navbar' ) {
+            $this->renderLogo();
+          }
           # Page header & menu
           $this->renderNavigation( array( 'PAGE' ) );
+
+          # This content in other languages
+          if ( $this->data['language_urls'] ) {
+            $this->renderNavigation( array( 'LANGUAGES' ) );
+          }
 
           # Edit button
           $this->renderNavigation( array( 'EDIT' ) ); 
@@ -169,9 +158,6 @@ class StrappingTemplate extends BaseTemplate {
 
       <div class="pull-right">
         <?php
-          # Namespaces, views, & variants have been merged into the page menu above
-          #$this->renderNavigation( array( 'NAMESPACES', 'VIEWS', 'VARIANTS' ) ); 
-
           if ($wgSearchPlacement['header']) {
             $this->renderNavigation( array( 'SEARCH' ) ); 
           }
@@ -184,43 +170,24 @@ class StrappingTemplate extends BaseTemplate {
     </div>
   </div>
 </div>
-<!--
-<pre><?php print_r($this->getToolbox()); ?></pre>
-<pre><?php print_r($this->data['content_actions']); ?></pre>
-<pre><?php #print_r($this->data); ?></pre>
--->
 <?php } ?>
-<!--<pre><?php print_r($this->getPersonalTools()); ?></pre>-->
-
 
     <div id="mw-page-base" class="noprint"></div>
     <div id="mw-head-base" class="noprint"></div>
 
     <!-- Header -->
     <div id="page-header" class="container">
-      <section class="row">
-
       <section class="span12">
 
-        <!-- logo -->
-        <div id="p-logo" class="logo pull-left"><a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) ?>" <?php echo Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) ) ?>><img src="<?php $this->text( 'logopath' ); ?>" alt="<?php $this->html('sitename'); ?>"></a></div>
-        <!-- /logo -->
+      <?php
+      if ( $wgStrappingSkinLogoLocation == 'bodycontent' ) {
+        $this->renderLogo();
+      } ?>
 
       <ul class="navigation nav nav-pills pull-right searchform-disabled">
 
-      <?php foreach ( $this->data['sidebar'] as $name => $content ) {
-          # This is a rather hacky way to name the nav.
-          # (There are probably bugs here...) 
-          foreach( $content as $key => $val ) {
-            $navClasses = '';
-
-            if ($this->data['content_navigation']['views']['view']['href'] == $val['href']) {
-              $navClasses = 'active';
-            }
-
-            echo "<li class='$navClasses'>" . $this->makeLink($key, $val, $options) . "</li>";
-          }
-      }
+      <?php
+      $this->renderNavigation( array( 'SIDEBAR' ) );
 
       if ($wgSearchPlacement['nav']) {
         $this->renderNavigation( array( 'SEARCHNAV' ) );
@@ -248,28 +215,8 @@ class StrappingTemplate extends BaseTemplate {
       <div id="siteNotice"><?php $this->html( 'sitenotice' ) ?></div>
       <!-- /sitenotice -->
       <?php endif; ?>
-      <!-- firstHeading -->
-      <!--
-      <h1 id="firstHeading" class="firstHeading page-header">
-        <span dir="auto"><?php $this->html( 'title' ) ?></span>
-      </h1>
-      -->
-      <!-- /firstHeading -->
       <!-- bodyContent -->
       <div id="bodyContent">
-        <?php if ( $this->data['isarticle'] ): ?>
-        <!-- tagline -->
-        <!--<div id="siteSub"><?php $this->msg( 'tagline' ) ?></div>-->
-        <!-- /tagline -->
-        <?php endif; ?>
-        <!-- subtitle -->
-        <div id="contentSub"<?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
-        <!-- /subtitle -->
-        <?php if ( $this->data['undelete'] ): ?>
-        <!-- undelete -->
-        <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
-        <!-- /undelete -->
-        <?php endif; ?>
         <?php if( $this->data['newtalk'] ): ?>
         <!-- newtalk -->
         <div class="usermessage"><?php $this->html( 'newtalk' )  ?></div>
@@ -284,23 +231,42 @@ class StrappingTemplate extends BaseTemplate {
         <!-- /jumpto -->
         <?php endif; ?>
 
-        <!-- bodycontent -->
-        <?php # Peek into the body content, to see if a custom layout is used ?>
-        <?php if (preg_match("/class.*row/i", $this->data['bodycontent'])) { ?>
-          <?php # If there's a custom layout, the H1 and layout is up to the page ?>
-          <div class="layout">
-            <?php $this->html( 'bodycontent' ); ?>
-          </div>
-        <?php } else { ?>
-          <?php # If there's no custom layout, then we automagically add one ?>
-          <div class="row nolayout"><div class="offset1 span10">
+        <!-- innerbodycontent -->
+        <?php # Peek into the body content, to see if a custom layout is used
+        if ($wgStrappingSkinUseStandardLayout || preg_match("/class.*row/i", $this->data['bodycontent'])) { 
+          # If there's a custom layout, the H1 and layout is up to the page ?>
+          <div id="innerbodycontent" class="layout">
             <h1 id="firstHeading" class="firstHeading page-header">
               <span dir="auto"><?php $this->html( 'title' ) ?></span>
             </h1>
+            <!-- subtitle -->
+            <div id="contentSub" <?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
+            <!-- /subtitle -->
+            <?php if ( $this->data['undelete'] ): ?>
+            <!-- undelete -->
+            <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
+            <!-- /undelete -->
+            <?php endif; ?>
+            <?php $this->html( 'bodycontent' ); ?>
+          </div>
+        <?php } else {
+          # If there's no custom layout, then we automagically add one ?>
+          <div id="innerbodycontent" class="row nolayout"><div class="offset1 span10">
+            <h1 id="firstHeading" class="firstHeading page-header">
+              <span dir="auto"><?php $this->html( 'title' ) ?></span>
+            </h1>
+            <!-- subtitle -->
+            <div id="contentSub" <?php $this->html( 'userlangattributes' ) ?>><?php $this->html( 'subtitle' ) ?></div>
+            <!-- /subtitle -->
+            <?php if ( $this->data['undelete'] ): ?>
+            <!-- undelete -->
+            <div id="contentSub2"><?php $this->html( 'undelete' ) ?></div>
+            <!-- /undelete -->
+            <?php endif; ?>
             <?php $this->html( 'bodycontent' ); ?>
           </div></div>
         <?php } ?>
-        <!-- /bodycontent -->
+        <!-- /innerbodycontent -->
 
         <?php if ( $this->data['printfooter'] ): ?>
         <!-- printfooter -->
@@ -328,16 +294,6 @@ class StrappingTemplate extends BaseTemplate {
     </section>
     <!-- /content -->
 
-    <?php if ($this->data['loggedin']) { ?>
-
-      <!-- panel -->
-      <div id="mw-panel" class="noprint">
-        <?php $this->renderPortals(); ?>
-      </div>
-      <!-- /panel -->
-
-    <?php } ?>
-
       <!-- footer -->
       <div id="footer" class="footer container"<?php $this->html( 'userlangattributes' ) ?>>
         <div class="row">
@@ -356,7 +312,7 @@ class StrappingTemplate extends BaseTemplate {
                 if ($category === 'places') {
 
                   # Show sign in link, if not signed in
-                  if (!$this->data['loggedin']) {
+                  if ($wgStrappingSkinLoginLocation == 'footer' && !$this->data['loggedin']) {
                     $personalTemp = $this->getPersonalTools();
                     ?><li id="pt-login"><a href="<?php echo $personalTemp['login']['links'][0]['href'] ?>"><?php echo $personalTemp['login']['links'][0]['text']; ?></a></li><?php
                   }
@@ -399,78 +355,13 @@ class StrappingTemplate extends BaseTemplate {
   }
 
   /**
-   * Render a series of portals
-   *
-   * @param $portals array
+   * Render logo
    */
-  private function renderPortals( $portals ) {
-    // Force the rendering of the following portals
-    if ( !isset( $portals['SEARCH'] ) ) {
-      $portals['SEARCH'] = false;
-    }
-    if ( !isset( $portals['TOOLBOX'] ) ) {
-      $portals['TOOLBOX'] = false;
-    }
-    if ( !isset( $portals['LANGUAGES'] ) ) {
-      $portals['LANGUAGES'] = true;
-    }
-    // Render portals
-    foreach ( $portals as $name => $content ) {
-      if ( $content === false )
-        continue;
-
-      echo "\n<!-- {$name} -->\n";
-      switch( $name ) {
-        case 'SEARCH':
-          break;
-
-        case 'TOOLBOX':
-          $this->renderPortal( 'tb', $this->getToolbox(), 'toolbox', 'SkinTemplateToolboxEnd' );
-          break;
-
-        case 'LANGUAGES':
-          if ( $this->data['language_urls'] ) {
-            $this->renderPortal( 'lang', $this->data['language_urls'], 'otherlanguages' );
-          }
-          break;
-
-        default:
-          $this->renderPortal( $name, $content );
-        break;
-      }
-      echo "\n<!-- /{$name} -->\n";
-    }
-  }
-
-  private function renderPortal( $name, $content, $msg = null, $hook = null ) {
-    if ( $msg === null ) {
-      $msg = $name;
-    }
-    ?>
-<div class="portal" id='<?php echo Sanitizer::escapeId( "p-$name" ) ?>'<?php echo Linker::tooltip( 'p-' . $name ) ?>>
-  <h5<?php $this->html( 'userlangattributes' ) ?>><?php $msgObj = wfMessage( $msg ); echo htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $msg ); ?></h5>
-  <div class="body">
-<?php
-    if ( is_array( $content ) ): ?>
-    <ul>
-<?php
-      foreach( $content as $key => $val ): ?>
-      <?php echo $this->makeListItem( $key, $val ); ?>
-
-<?php
-      endforeach;
-      if ( $hook !== null ) {
-        wfRunHooks( $hook, array( &$this, true ) );
-      }
-      ?>
-    </ul>
-<?php
-    else: ?>
-    <?php echo $content; /* Allow raw HTML block to be defined by extensions */ ?>
-<?php
-    endif; ?>
-  </div>
-</div>
+  private function renderLogo() {
+        $mainPageLink = $this->data['nav_urls']['mainpage']['href'];
+        $toolTip = Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) );
+?>
+                  <ul class="nav" role="navigation"><li id="p-logo"><a href="<?php echo htmlspecialchars( $this->data['nav_urls']['mainpage']['href'] ) ?>" <?php echo Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'p-logo' ) ) ?>><img src="<?php $this->text( 'logopath' ); ?>" alt="<?php $this->html('sitename'); ?>"></a><li></ul>
 <?php
   }
 
@@ -482,6 +373,8 @@ class StrappingTemplate extends BaseTemplate {
    */
   private function renderNavigation( $elements ) {
     global $wgVectorUseSimpleSearch;
+    global $wgStrappingSkinLoginLocation;
+    global $wgStrappingSkinDisplaySidebarNavigation;
 
     // If only one element was given, wrap it in an array, allowing more
     // flexible arguments
@@ -497,23 +390,32 @@ class StrappingTemplate extends BaseTemplate {
       switch ( $element ) {
 
         case 'EDIT':
+          if ( !array_key_exists('edit', $this->data['content_actions']) ) {
+            break;
+          }
           $navTemp = $this->data['content_actions']['edit'];
 
           if ($navTemp) { ?>
             <div class="actions pull-left nav">
-                <a href="<?php echo $navTemp['href']; ?>" class="btn"><i class="icon-edit"></i> <?php echo $navTemp['text']; ?></a>
+                <a id="b-edit" href="<?php echo $navTemp['href']; ?>" class="btn"><i class="icon-edit"></i> <?php echo $navTemp['text']; ?></a>
             </div>
           <?php } 
         break;
 
 
         case 'PAGE':
-          $theMsg = 'thispage';
+          $theMsg = 'namespaces';
           $theData = array_merge($this->data['namespace_urls'], $this->data['view_urls']);
           ?>
           <ul class="nav" role="navigation">
             <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php $this->html($theMsg) ?> <b class="caret"></b></a>
+              <?php
+              foreach ( $theData as $link ) {
+                  if ( array_key_exists( 'context', $link ) && $link['context'] == 'subject' ) {
+              ?>
+              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo htmlspecialchars( $link['text'] ); ?> <b class="caret"></b></a>
+                  <?php } ?>
+              <?php } ?>
               <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
 
                 <?php 
@@ -526,27 +428,6 @@ class StrappingTemplate extends BaseTemplate {
 
           ?></ul></li></ul><?php
 
-        break;
-
-
-        case 'NAMESPACES':
-
-          $theMsg = 'namespaces';
-          $theData = $this->data['namespace_urls'];
-
-          ?>
-          <ul class="nav" role="navigation">
-            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-              <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php $this->msg($theMsg) ?> <b class="caret"></b></a>
-              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
-                <?php foreach ( $theData as $link ): ?>
-                  <li<?php echo $link['attributes'] ?>><a href="<?php echo htmlspecialchars( $link['href'] ) ?>" <?php echo $link['key'] ?> tabindex="-1"><?php echo htmlspecialchars( $link['text'] ) ?></a></li>
-                <?php endforeach; ?>
-              </ul>
-            </li>
-          </ul>
-
-          <?php
         break;
 
 
@@ -629,7 +510,7 @@ class StrappingTemplate extends BaseTemplate {
           if (count($theData) > 0) {
             ?><ul class="nav" role="navigation">
               <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo $this->data['content_actions']['nstab-main']['text'] ?> <b class="caret"></b></a>
+                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo $this->msg( 'actions' ); ?> <b class="caret"></b></a>
                 <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
                   <?php foreach ( $theData as $link ):
 
@@ -653,24 +534,53 @@ class StrappingTemplate extends BaseTemplate {
           $theMsg = 'personaltools';
           $theData = $this->getPersonalTools();
           $theTitle = $this->data['username'];
+          $showPersonal = false;
+          foreach ( $theData as $key => $item ) {
+            if ( !preg_match('/(notifications|login|createaccount)/', $key) ) {
+              $showPersonal = true;
+            }
+          }
 
           ?>
           <ul class="nav pull-right" role="navigation">
-            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <li class="dropdown" id="p-notifications" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <?php if ( array_key_exists('notifications', $theData) ) {
+              echo $this->makeListItem( 'notifications', $theData['notifications'] );
+            } ?>
+            </li>
+            <?php if ( $wgStrappingSkinLoginLocation == 'navbar' ): ?>
+            <li class="dropdown" id="p-createaccount" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+              <?php if ( array_key_exists('createaccount', $theData) ) {
+                echo $this->makeListItem( 'createaccount', $theData['createaccount'] );
+              } ?>
+            </li>
+            <li class="dropdown" id="p-login" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+            <?php if ( array_key_exists('login', $theData) ) {
+                echo $this->makeListItem( 'login', $theData['login'] );
+            } ?>
+            </li>
+            <?php endif; ?>
+            <?php
+            if ( $showPersonal ):
+            ?>
+            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( !$showPersonal ) echo ' emptyPortlet'; ?>">
               <a data-toggle="dropdown" class="dropdown-toggle" role="button">
                 <i class="icon-user"></i>
-                <?php echo $theImg . $theTitle; ?> <b class="caret"></b></a>
+                <?php echo $theTitle; ?> <b class="caret"></b></a>
               <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
-              <?php foreach( $this->getPersonalTools() as $key => $item ) {
+              <?php foreach( $theData as $key => $item ) {
 
                 if (preg_match('/preferences|logout/', $key)) {
                   echo '<li class="divider"></li>';
+                } else if ( preg_match('/(notifications|login|createaccount)/', $key) ) {
+                  continue;
                 }
 
                 echo $this->makeListItem( $key, $item );
               } ?>
               </ul>
             </li>
+            <?php endif; ?>
           </ul>
           <?php
         break;
@@ -711,6 +621,49 @@ class StrappingTemplate extends BaseTemplate {
           <?php
         break;
 
+
+        case 'SIDEBAR':
+          foreach ( $this->data['sidebar'] as $name => $content ) {
+            if ( !$content ) {
+              continue;
+            }
+            $msgObj = wfMessage( $name );
+            $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $name );
+            if ( $wgStrappingSkinDisplaySidebarNavigation ) { ?>
+              <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo htmlspecialchars( $name ); ?><b class="caret"></b></a>
+                <ul aria-labelledby="<?php echo htmlspecialchars( $name ); ?>" role="menu" class="dropdown-menu"><?php
+            }
+            # This is a rather hacky way to name the nav.
+            # (There are probably bugs here...) 
+            foreach( $content as $key => $val ) {
+              $navClasses = '';
+
+              if (array_key_exists('view', $this->data['content_navigation']['views']) && $this->data['content_navigation']['views']['view']['href'] == $val['href']) {
+                $navClasses = 'active';
+              }?>
+
+                <li class='$navClasses'><?php echo $this->makeLink($key, $val); ?></li><?php
+            }
+            if ( $wgStrappingSkinDisplaySidebarNavigation ) {?>                </ul>              </li><?php
+            }          }
+        break;
+
+        case 'LANGUAGES':
+          $theMsg = 'otherlanguages';
+          $theData = $this->data['language_urls']; ?>
+          <ul class="nav" role="navigation">
+            <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
+              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo $this->html($theMsg) ?> <b class="caret"></b></a>
+              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
+
+              <?php foreach( $content as $key => $val ) { ?>
+                <li class='$navClasses'><?php echo $this->makeLink($key, $val, $options); ?></li><?php
+              }?>
+
+              </ul>            </li>
+          </ul><?php
+          break;
       }
       echo "\n<!-- /{$name} -->\n";
     }
