@@ -150,6 +150,9 @@ class StrappingTemplate extends BaseTemplate {
           # Actions menu
           $this->renderNavigation( array( 'ACTIONS' ) ); 
 
+          # Sidebar items to display in navbar
+          $this->renderNavigation( array( 'SIDEBARNAV' ) );
+
           if ( !isset( $portals['TOOLBOX'] ) ) {
             $this->renderNavigation( array( 'TOOLBOX' ) ); 
           }
@@ -619,6 +622,37 @@ class StrappingTemplate extends BaseTemplate {
             </form>
 
           <?php
+        break;
+
+
+        case 'SIDEBARNAV':
+          foreach ( $this->data['sidebar'] as $name => $content ) {
+            if ( !$content ) {
+              continue;
+            }
+            if ( !in_array( $name, $wgStrappingSkinSidebarItemsInNavbar ) ) {
+                    continue;
+            }
+            $msgObj = wfMessage( $name );
+            $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $name ); ?>
+          <ul class="nav" role="navigation">
+          <li class="dropdown" id="p-<?php echo $name; ?>" class="vectorMenu">
+          <a data-toggle="dropdown" class="dropdown-toggle" role="menu"><?php echo htmlspecialchars( $name ); ?> <b class="caret"></b></a>
+          <ul aria-labelledby="<?php echo htmlspecialchars( $name ); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>><?php
+            # This is a rather hacky way to name the nav.
+            # (There are probably bugs here...) 
+            foreach( $content as $key => $val ) {
+              $navClasses = '';
+
+              if (array_key_exists('view', $this->data['content_navigation']['views']) && $this->data['content_navigation']['views']['view']['href'] == $val['href']) {
+                $navClasses = 'active';
+              }?>
+
+                <li class='$navClasses'><?php echo $this->makeLink($key, $val); ?></li><?php
+            }
+          }?>
+         </li>
+         </ul></ul><?php
         break;
 
 

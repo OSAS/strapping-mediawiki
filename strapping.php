@@ -43,3 +43,5 @@ $wgStrappingSkinLoginLocation = 'footer';
 $wgStrappingSkinAnonNavbar = false;
 $wgStrappingSkinUseStandardLayout = true;
 $wgStrappingSkinDisplaySidebarNavigation = false;
+# Show print/export in navbar by default
+$wgStrappingSkinSidebarItemsInNavbar = array( 'coll-print_export' );
