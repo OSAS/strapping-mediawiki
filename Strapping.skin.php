@@ -627,6 +627,8 @@ class StrappingTemplate extends BaseTemplate {
             if ( !$content ) {
               continue;
             }
+            $msgObj = wfMessage( $name );
+            $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $name );
             if ( $wgStrappingSkinDisplaySidebarNavigation ) { ?>
               <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" role="button"><?php echo htmlspecialchars( $name ); ?><b class="caret"></b></a>
