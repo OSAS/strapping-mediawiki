@@ -497,3 +497,54 @@ input, button, select, textarea {
     column-gap: 40px;
   }
 }
+
+section#content a.external,
+section#content a.external[href ^="gopher://"] {
+	/* @embed */
+	background: url(images/external-link-ltr-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href ^="https://"],
+.link-https {
+	/* @embed */
+	background: url(images/lock-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href ^="mailto:"],
+.link-mailto {
+	/* @embed */
+	background: url(images/mail-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href ^="news:"] {
+	/* @embed */
+	background: url(images/news-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href ^="ftp://"],
+.link-ftp {
+	/* @embed */
+	background: url(images/file-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href ^="irc://"],
+section#content a.external[href ^="ircs://"],
+.link-irc {
+	/* @embed */
+	background: url(images/talk-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href $=".ogg"], section#content a.external[href $=".OGG"],
+section#content a.external[href $=".mid"], section#content a.external[href $=".MID"],
+section#content a.external[href $=".midi"], section#content a.external[href $=".MIDI"],
+section#content a.external[href $=".mp3"], section#content a.external[href $=".MP3"],
+section#content a.external[href $=".wav"], section#content a.external[href $=".WAV"],
+section#content a.external[href $=".wma"], section#content a.external[href $=".WMA"],
+.link-audio {
+	/* @embed */
+	background: url(images/audio-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
+section#content a.external[href $=".ogm"], section#content a.external[href $=".OGM"],
+section#content a.external[href $=".avi"], section#content a.external[href $=".AVI"],
+section#content a.external[href $=".mpeg"], section#content a.external[href $=".MPEG"],
