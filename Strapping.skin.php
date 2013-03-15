@@ -649,7 +649,7 @@ class StrappingTemplate extends BaseTemplate {
                 $navClasses = 'active';
               }?>
 
-                <li class='$navClasses'><?php echo $this->makeLink($key, $val); ?></li><?php
+                <li class="<?php echo $navClasses ?>"><?php echo $this->makeLink($key, $val); ?></li><?php
             }
           }?>
          </li>
@@ -681,7 +681,7 @@ class StrappingTemplate extends BaseTemplate {
                 $navClasses = 'active';
               }?>
 
-                <li class='$navClasses'><?php echo $this->makeLink($key, $val); ?></li><?php
+                <li class="<?php echo $navClasses ?>"><?php echo $this->makeLink($key, $val); ?></li><?php
             }
             if ( $wgStrappingSkinDisplaySidebarNavigation ) {?>                </ul>              </li><?php
             }          }
@@ -696,7 +696,7 @@ class StrappingTemplate extends BaseTemplate {
               <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
 
               <?php foreach( $content as $key => $val ) { ?>
-                <li class='$navClasses'><?php echo $this->makeLink($key, $val, $options); ?></li><?php
+                <li class="<?php echo $navClasses ?>"><?php echo $this->makeLink($key, $val, $options); ?></li><?php
               }?>
 
               </ul>            </li>
