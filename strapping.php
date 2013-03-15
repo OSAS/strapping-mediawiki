@@ -41,7 +41,7 @@ $wgResourceModules['skins.strapping'] = array(
 $wgStrappingSkinLogoLocation = 'bodycontent';
 $wgStrappingSkinLoginLocation = 'footer';
 $wgStrappingSkinAnonNavbar = false;
-$wgStrappingSkinUseStandardLayout = true;
+$wgStrappingSkinUseStandardLayout = false;
 $wgStrappingSkinDisplaySidebarNavigation = false;
 # Show print/export in navbar by default
 $wgStrappingSkinSidebarItemsInNavbar = array( 'coll-print_export' );
