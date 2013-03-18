@@ -318,7 +318,7 @@ class StrappingTemplate extends BaseTemplate {
                   if ($wgStrappingSkinLoginLocation == 'footer' && !$this->data['loggedin']) {
                     $personalTemp = $this->getPersonalTools();
 
-                    if ($personalTemp['login']) {
+                    if (isset($personalTemp['login'])) {
                       $loginType = 'login';
                     } else {
                       $loginType = 'anonlogin';
