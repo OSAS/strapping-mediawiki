@@ -300,7 +300,7 @@ class StrappingTemplate extends BaseTemplate {
       <!-- footer -->
       <div id="footer" class="footer container"<?php $this->html( 'userlangattributes' ) ?>>
         <div class="row">
-<?php
+    <?php
       $footerLinks = $this->getFooterLinks();
 
       if (is_array($footerLinks)) {
@@ -317,7 +317,14 @@ class StrappingTemplate extends BaseTemplate {
                   # Show sign in link, if not signed in
                   if ($wgStrappingSkinLoginLocation == 'footer' && !$this->data['loggedin']) {
                     $personalTemp = $this->getPersonalTools();
-                    ?><li id="pt-login"><a href="<?php echo $personalTemp['login']['links'][0]['href'] ?>"><?php echo $personalTemp['login']['links'][0]['text']; ?></a></li><?php
+
+                    if ($personalTemp['login']) {
+                      $loginType = 'login';
+                    } else {
+                      $loginType = 'anonlogin';
+                    }
+
+                    ?><li id="pt-login"><a href="<?php echo $personalTemp[$loginType]['links'][0]['href'] ?>"><?php echo $personalTemp[$loginType]['links'][0]['text']; ?></a></li><?php
                   }
 
                   # Show the search in footer to all
