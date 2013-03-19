@@ -45,7 +45,7 @@ You can see a (customized) instance of Strapping in action by visiting http://oV
    git clone https://github.com/OSAS/strapping-mediawiki strapping
    ```
 
-3. Edit `LocalSettings.php` to add the following: 
+3. Add the following to `LocalSettings.php`: 
 
    ```php
    require_once( "$IP/skins/strapping/strapping.php" );
