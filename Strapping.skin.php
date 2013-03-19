@@ -126,7 +126,7 @@ class StrappingTemplate extends BaseTemplate {
     $this->html( 'headelement' );
 ?>
 
-<?php if ( $wgStrappingSkinAnonNavbar || $this->data['loggedin'] ) { ?>
+<?php if ( $wgGroupPermissions['*']['edit'] || $wgStrappingSkinAnonNavbar || $this->data['loggedin'] ) { ?>
 <div id="userbar" class="navbar navbar-static">
   <div class="navbar-inner">
     <div style="width: auto;" class="container">
