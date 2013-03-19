@@ -33,16 +33,34 @@ You can see a (customized) instance of Strapping in action by visiting http://oV
 
 ## Get started
 
-1. Change to the "skins" subdirectory of your MediaWiki installation: `cd skins`
-2. Clone the repository: 
-   `git clone https://github.com/OSAS/strapping-mediawiki strapping`
-3. Edit `LocalSettings.php` to add: `require_once( "$IP/skins/strapping/strapping.php" );`
-4. Edit `LocalSettings.php` to change the skin to "strapping":
-  `$wgDefaultSkin = "strapping";`
-5. Edit the wiki page `MediaWiki:Sidebar` with your web browser
+1. Change to the "skins" subdirectory of your MediaWiki installation:
+
+   ```
+   cd skins
+   ```
+
+2. Clone the repository:
+
+   ```
+   git clone https://github.com/OSAS/strapping-mediawiki strapping
+   ```
+
+3. Edit `LocalSettings.php` to add the following: 
+
+   ```php
+   require_once( "$IP/skins/strapping/strapping.php" );
+   $wgDefaultSkin = "strapping";
+   ```
+   
+   (You may safely remove or comment out other mentions of
+   `$wgDefaultSkin`.)
+
+4. Edit the wiki page `MediaWiki:Sidebar` with your web browser
    to change your navigation links.
-6. Customize the skin to make the site look how you'd want.
+
+5. Customize the skin to make the site look how you'd want.
    (See "Customization", below.)
+
 
 ### Optional configuration
 
@@ -59,7 +77,9 @@ You can either leave full edit access available to anyone
 or lock it down a bit.
 
 To operate in this mode, add the following to `LocalSettings.php`:
-`$wgGroupPermissions['*']['edit'] = false;`
+```php
+$wgGroupPermissions['*']['edit'] = false;
+```
 
 
 ## Customization
