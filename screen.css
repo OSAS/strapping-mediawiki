@@ -71,10 +71,6 @@ a:not([name]) {
 }
 
 @media (min-width: 768px) {
-  .searchform-enabled input,
-  .searchform-disabled a.search-link {
-  }
-
   .searchform-disabled input,
   .searchform-enabled a.search-link i,
   .searchform-enabled a.search-link {
@@ -413,9 +409,6 @@ input, button, select, textarea {
 
 
 /* History */
-
-#contentSub {
-}
 
 #contentSub br {
   display: none;
