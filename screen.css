@@ -548,3 +548,8 @@ section#content a.external[href $=".wma"], section#content a.external[href $=".W
 section#content a.external[href $=".ogm"], section#content a.external[href $=".OGM"],
 section#content a.external[href $=".avi"], section#content a.external[href $=".AVI"],
 section#content a.external[href $=".mpeg"], section#content a.external[href $=".MPEG"],
+.link-video {
+	/* @embed */
+	background: url(images/video-icon.png) center right no-repeat;
+	padding-right: 13px;
+}
