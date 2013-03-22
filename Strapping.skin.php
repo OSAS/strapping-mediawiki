@@ -67,6 +67,7 @@ class StrappingTemplate extends BaseTemplate {
    * Outputs the entire contents of the (X)HTML page
    */
   public function execute() {
+    global $wgGroupPermissions;
     global $wgVectorUseIconWatch;
     global $wgSearchPlacement;
     global $wgStrappingSkinLogoLocation;
