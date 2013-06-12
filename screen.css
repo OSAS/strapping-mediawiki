@@ -133,6 +133,9 @@ a:not([name]) {
   }
 }
 
+.layout .firstHeading {
+  display: none;
+}
 
 .nolayout .firstHeading {
   margin-top: 10px;
