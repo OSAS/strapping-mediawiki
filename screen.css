@@ -278,7 +278,19 @@ input, button, select, textarea {
 }
 
 .mw-search-createlink {
-  /* Redundant, if there's a page with containing the name anyway */
+  text-align: center;
+}
+
+.mw-search-createlink b {
+  font-weight: normal;
+}
+
+.mw-search-createlink a {
+}
+
+.not-editable .mw-search-createlink {
+  /* If there are no permissions to edit pages,
+   * do not display the create link on a no-results search */
   display: none;
 }
 

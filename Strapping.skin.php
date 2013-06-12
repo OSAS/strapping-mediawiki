@@ -210,6 +210,12 @@ class StrappingTemplate extends BaseTemplate {
       $userStateClass = "user-loggedout";
     } ?>
 
+    <?php if ($wgGroupPermissions['*']['edit'] || $this->data['loggedin']) {
+      $userStateClass += " editable";
+    } else {
+      $userStateClass += " not-editable";
+    } ?>
+
     <!-- content -->
     <section id="content" class="mw-body container <?php echo $userStateClass; ?>">
       <div id="top"></div>
