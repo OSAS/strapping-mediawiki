@@ -53,6 +53,10 @@ a:not([name]) {
   margin: 0;
 }
 
+#page-header .icon-search {
+  margin-right: 0.5ex;
+}
+
 .navigation a,
 .navigation form,
 .navigation input {
