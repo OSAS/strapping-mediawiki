@@ -673,7 +673,7 @@ class StrappingTemplate extends BaseTemplate {
 
         case 'SIDEBAR':
           foreach ( $this->data['sidebar'] as $name => $content ) {
-            if ( !$content ) {
+            if ( isset($content) ) {
               continue;
             }
             if ( in_array( $name, $wgStrappingSkinSidebarItemsInNavbar ) ) {
