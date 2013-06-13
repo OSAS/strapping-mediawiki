@@ -49,6 +49,9 @@ a:not([name]) {
   margin-left: 10px;
 }
 
+#page-header > section {
+  margin: 0;
+}
 
 .navigation a,
 .navigation form,
