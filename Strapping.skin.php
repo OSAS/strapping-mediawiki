@@ -50,8 +50,27 @@ class SkinStrapping extends SkinTemplate {
    * @param $out OutputPage object
    */
   function setupSkinUserCss( OutputPage $out ){
+    global $wgResourceModules;
+
     parent::setupSkinUserCss( $out );
-    $out->addModuleStyles( 'skins.strapping' );
+
+    // FIXME: This is the "proper" way to include CSS
+    // however, MediaWiki's ResourceLoader messes up media queries
+    // See: https://bugzilla.wikimedia.org/show_bug.cgi?id=38586
+    // &: http://stackoverflow.com/questions/11593312/do-media-queries-work-in-mediawiki
+    //
+    //$out->addModuleStyles( 'skins.strapping' );
+
+    // Instead, we're going to manually add each, 
+    // so we can use media queries
+    foreach ( $wgResourceModules['skins.strapping']['styles'] as $cssfile => $cssvals ) {
+      if (isset($cssvals)) {
+        $out->addStyle( $cssfile, $cssvals['media'] );
+      } else {
+        $out->addStyle( $cssfile );
+      }
+    }
+
   }
 }
 
