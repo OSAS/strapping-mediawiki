@@ -1,14 +1,3 @@
-@import url(bootstrap/css/bootstrap.css);
-@import url(bootstrap/css/bootstrap-responsive.css);
-/*
-@import url(prefs.css);
-*/
-
-/* Font Awesome - http://fortawesome.github.com/Font-Awesome */
-@import url(bootstrap/awesome/css/font-awesome.css);
-
-@import url(theme.css);
-
 html {
   /* Always show a scrollbar, to prevent jumping content */
   overflow-x: hidden;
