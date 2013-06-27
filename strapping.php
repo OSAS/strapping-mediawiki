@@ -36,6 +36,10 @@ $wgResourceModules['skins.strapping'] = array(
         'localBasePath' => &$GLOBALS['wgStyleDirectory'],
 );
 
+if (file_exists('strapping/fonts.css')) {
+  $wgResourceModules['skins.strapping']['styles'][] = 'strapping/fonts.css';
+}
+
 # Default options to customize skin
 $wgStrappingSkinLogoLocation = 'bodycontent';
 $wgStrappingSkinLoginLocation = 'footer';
