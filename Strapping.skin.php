@@ -640,7 +640,7 @@ class StrappingTemplate extends BaseTemplate {
         case 'SEARCH':
           ?>
             <form class="navbar-search" action="<?php $this->text( 'wgScript' ) ?>" id="searchform">
-              <input id="searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
+              <input id="searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo htmlspecialchars ($this->data['search']); ?>">
               <?php echo $this->makeSearchButton( 'fulltext', array( 'id' => 'mw-searchButton', 'class' => 'searchButton btn hidden' ) ); ?>
             </form>
 
@@ -653,7 +653,7 @@ class StrappingTemplate extends BaseTemplate {
         <li>
           <a id="n-Search" class="search-link"><i class="icon-search"></i>Search</a>
           <form class="navbar-search" action="<?php $this->text( 'wgScript' ) ?>" id="nav-searchform">
-                        <input id="nav-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
+                        <input id="nav-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo htmlspecialchars ($this->data['search']); ?>">
                         <?php echo $this->makeSearchButton( 'fulltext', array( 'id' => 'mw-searchButton', 'class' => 'searchButton btn hidden' ) ); ?>
           </form>
         </li>
@@ -665,7 +665,7 @@ class StrappingTemplate extends BaseTemplate {
         case 'SEARCHFOOTER':
           ?>
             <form class="" action="<?php $this->text( 'wgScript' ) ?>" id="footer-search">
-              <i class="icon-search"></i><b class="border"></b><input id="footer-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo $this->data['search']; ?>">
+              <i class="icon-search"></i><b class="border"></b><input id="footer-searchInput" class="search-query" type="search" accesskey="f" title="<?php $this->text('searchtitle'); ?>" placeholder="<?php $this->msg('search'); ?>" name="search" value="<?php echo htmlspecialchars ($this->data['search']); ?>">
               <?php echo $this->makeSearchButton( 'fulltext', array( 'id' => 'mw-searchButton', 'class' => 'searchButton btn hidden' ) ); ?>
             </form>
 
