@@ -324,6 +324,18 @@ class StrappingTemplate extends BaseTemplate {
     <!-- /content -->
 
       <!-- footer -->
+
+      <?php
+        /* Support a custom footer, or use MediaWiki's default, if footer.php does not exist. */
+        $footerfile = dirname(__FILE__).'/footer.php';
+
+        if ( file_exists($footerfile) ):
+          ?><div id="footer" class="footer container custom-footer"><?php
+            include( $footerfile );
+          ?></div><?php
+        else:
+      ?>
+
       <div id="footer" class="footer container"<?php $this->html( 'userlangattributes' ) ?>>
         <div class="row">
     <?php
@@ -382,6 +394,8 @@ class StrappingTemplate extends BaseTemplate {
         </div>
       </div>
       <!-- /footer -->
+
+<?php endif; ?>
 
     <?php $this->printTrail(); ?>
 
