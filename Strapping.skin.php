@@ -199,7 +199,7 @@ class StrappingTemplate extends BaseTemplate {
     <div id="mw-head-base" class="noprint"></div>
 
     <!-- Header -->
-    <div id="page-header" class="container">
+    <div id="page-header" class="container <?php echo $this->data['loggedin'] ? 'signed-in' : 'signed-out'; ?>">
       <section class="span12">
 
       <?php
