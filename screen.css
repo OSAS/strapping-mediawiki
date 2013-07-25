@@ -558,14 +558,13 @@ section#content a.external[href $=".mpeg"], section#content a.external[href $=".
 	padding-right: 13px;
 }
 
-/** Strapping doesn't style non-typed inputs, apparently **/
+/** Bootstrap doesn't style non-typed inputs, apparently **/
 input:not([type]) {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(204, 204, 204);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
     display: inline-block;
-    height: 20px;
     padding: 4px 6px;
     margin-bottom: 9px;
     font-size: 14px;
@@ -577,4 +576,10 @@ input:not([type]):focus {
     border-color: rgba(82, 168, 236, 0.8);
     outline: 0px none;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(82, 168, 236, 0.6);
+}
+/** Bootstrap shouldn't set input heights (line-height should be enough)
+ * (redefining it exactly the same so that it doesn't need !important,
+ * and can be easily redefined in theme.css **/
+select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  height: auto;
 }
