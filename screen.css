@@ -137,6 +137,13 @@ a:not([name]) {
   margin-top: 10px;
 }
 
+/* Add margins to preview-related elements when editing in layout mode */
+.layout .previewnote,
+.layout #editform {
+  clear: both;
+  margin: 40px 100px 20px;
+}
+
 
 /* Fix mediawiki radio & checkbox */
 label {
