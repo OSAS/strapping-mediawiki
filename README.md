@@ -31,6 +31,12 @@ or do some more advanced layout (with columns, etc.) using Bootstrap.
 You can see a (customized) instance of Strapping in action by visiting http://oVirt.org/
 
 
+## Requirements
+
+* Webserver with PHP (needed for MediaWiki)
+* MediaWiki 1.18.1 or higher (1.18.1 was the first release with jQuery 1.7+, needed for Bootstrap)
+
+
 ## Get started
 
 1. Change to the "skins" subdirectory of your MediaWiki installation:
