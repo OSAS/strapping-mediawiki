@@ -13,5 +13,13 @@ $messages = array();
  */
 $messages['en'] = array(
 	'skinname-strapping' => "Strapping",
-	'strapping-desc' => "Strapping is built on top of a modified Vector theme from MediaWiki and utilizes Twitter's Bootstrap for base layout, typography, and additional widgets.",
+	'strapping-desc' => "Provides a modified Vector skin utilizing Twitter's Bootstrap",
+);
+
+/** German (Deutsch)
+* @author Kghbln
+*/
+$messages['de'] = array(
+        'skinname-strapping' => 'Strapping',
+        'strapping-desc' => 'Stellt eine auf die Benutzeroberfläche „Vector“ sowie Twitters „Bootstrap“ gestützte Benutzeroberfläche bereit'
 );
