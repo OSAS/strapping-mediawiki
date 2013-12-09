@@ -1,6 +1,10 @@
 <?php
 /**
- * My Skin skin
+ * Initialization file for the Strapping skin
+ *
+ * Strapping is a skin built on top of a modified Vector theme from
+ * MediaWiki and utilizes Twitter's Bootstrap for base layout,
+ * typography, and additional widgets.
  *
  * @file
  * @ingroup Skins
