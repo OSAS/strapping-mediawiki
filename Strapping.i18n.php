@@ -13,7 +13,7 @@ $messages = array();
  */
 $messages['en'] = array(
 	'skinname-strapping' => "Strapping",
-	'strapping-desc' => "Provides a modified Vector skin utilizing Twitter's Bootstrap",
+	'strapping-desc' => "Provides a modified Vector skin utilizing Bootstrap",
 );
 
 /** German (Deutsch)
@@ -21,5 +21,5 @@ $messages['en'] = array(
 */
 $messages['de'] = array(
         'skinname-strapping' => 'Strapping',
-        'strapping-desc' => 'Stellt eine auf die Benutzeroberfläche „Vector“ sowie Twitters „Bootstrap“ gestützte Benutzeroberfläche bereit'
+        'strapping-desc' => 'Stellt eine auf die Benutzeroberfläche „Vector“ sowie „Bootstrap“ gestützte Benutzeroberfläche bereit'
 );
