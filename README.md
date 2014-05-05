@@ -6,7 +6,8 @@ and was primarily created to provide a great default for wiki-as-a-website
 — but it works well for standard wikis too.
 
 Strapping is built on top of a modified Vector theme from **[MediaWiki](http://mediawiki.org/)**
-and utilizes Twitter's **[Bootstrap](http://twitter.github.com/bootstrap/)**
+and utilizes **[Bootstrap](http://getbootstrap.com/)**
+(currently Bootstrap 2; soon to be upgraded)
 for base layout, typography, and additional widgets.
 
 Because Strapping uses Bootstrap with its responsive extension,
@@ -100,7 +101,7 @@ Bootstrap has a customization page
 where you can change several aspects of the Bootstrap theme.
 Simply:
 
-1. Visit [the Bootstrap customizer page](http://twitter.github.com/bootstrap/customize.html)
+1. Visit [the Bootstrap customizer page](http://getbootstrap.com/2.3.2/customize.html)
 2. change values
 3. click the giant button at the bottom of the page
 4. replace Strapping's `bootstrap` directory with the one in your ZIP file
@@ -179,7 +180,7 @@ It looks something like this:
 ```
 
 For more information,
-please visit [Bootstrap's documentation](http://twitter.github.com/bootstrap/scaffolding.html).
+please visit [Bootstrap's documentation](http://getbootstrap.com/2.3.2/scaffolding.html).
 
 
 ### Documentation
