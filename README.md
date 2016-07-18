@@ -29,7 +29,7 @@ and have an easy-to-work with site
 so that anyone could either stick to MediaWiki marked up pages
 or do some more advanced layout (with columns, etc.) using Bootstrap.
 
-You can see a (customized) instance of Strapping in action by visiting http://oVirt.org/
+You can see a (customized) instance of Strapping in action by visiting http://old.ovirt.org/Home
 
 
 ## Requirements
@@ -49,7 +49,7 @@ You can see a (customized) instance of Strapping in action by visiting http://oV
 2. Clone the repository:
 
    ```
-   git clone https://github.com/OSAS/strapping-mediawiki strapping
+   git clone https://github.com/axxie/strapping-mediawiki strapping
    ```
 
 3. Add the following to `LocalSettings.php`: 
