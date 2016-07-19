@@ -104,7 +104,7 @@ class StrappingTemplate extends BaseTemplate {
     $nav = $this->data['content_navigation'];
 
     if ( $wgVectorUseIconWatch ) {
-      $mode = $this->getSkin()->getTitle()->userIsWatching() ? 'unwatch' : 'watch';
+      $mode = $this->getSkin()->getUser()->isWatched($this->getSkin()->getTitle()) ? 'unwatch' : 'watch';
       if ( isset( $nav['actions'][$mode] ) ) {
         $nav['views'][$mode] = $nav['actions'][$mode];
         $nav['views'][$mode]['class'] = rtrim( 'icon ' . $nav['views'][$mode]['class'], ' ' );
