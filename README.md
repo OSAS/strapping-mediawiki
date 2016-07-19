@@ -49,7 +49,7 @@ You can see a (customized) instance of Strapping in action by visiting http://ol
 2. Clone the repository:
 
    ```
-   git clone https://github.com/axxie/strapping-mediawiki strapping
+   git clone https://github.com/OSAS/strapping-mediawiki strapping
    ```
 
 3. Add the following to `LocalSettings.php`: 
