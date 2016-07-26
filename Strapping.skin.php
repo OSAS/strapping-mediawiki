@@ -737,14 +737,16 @@ class StrappingTemplate extends BaseTemplate {
 
         case 'LANGUAGES':
           $theMsg = 'otherlanguages';
+          $msgObj = wfMessage( $theMsg );
+          $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $theMsg );
           $theData = $this->data['language_urls']; ?>
           <ul class="nav" role="navigation">
             <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
-              <a data-toggle="dropdown" class="dropdown-toggle brand" role="menu"><?php echo $this->html($theMsg) ?> <b class="caret"></b></a>
-              <ul aria-labelledby="<?php echo $this->msg($theMsg); ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
+              <a data-toggle="dropdown" class="dropdown-toggle" role="menu"><?php echo $name ?> <b class="caret"></b></a>
+              <ul aria-labelledby="<?php echo $name; ?>" role="menu" class="dropdown-menu" <?php $this->html( 'userlangattributes' ) ?>>
 
-              <?php foreach( $content as $key => $val ) { ?>
-                <li class="<?php echo $navClasses ?>"><?php echo $this->makeLink($key, $val, $options); ?></li><?php
+              <?php foreach( $theData as $key => $val ) { ?>
+                <li><?php echo $this->makeLink($key, $val); ?></li><?php
               }?>
 
               </ul>            </li>
