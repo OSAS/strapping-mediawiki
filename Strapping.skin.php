@@ -738,7 +738,7 @@ class StrappingTemplate extends BaseTemplate {
         case 'LANGUAGES':
           $theMsg = 'otherlanguages';
           $msgObj = wfMessage( $theMsg );
-	      $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $theMsg );
+          $name = htmlspecialchars( $msgObj->exists() ? $msgObj->text() : $theMsg );
           $theData = $this->data['language_urls']; ?>
           <ul class="nav" role="navigation">
             <li class="dropdown" id="p-<?php echo $theMsg; ?>" class="vectorMenu<?php if ( count($theData) == 0 ) echo ' emptyPortlet'; ?>">
